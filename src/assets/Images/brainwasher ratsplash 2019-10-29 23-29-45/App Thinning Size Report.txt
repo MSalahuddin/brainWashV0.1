@@ -1,0 +1,92 @@
+
+App Thinning Size Report for All Variants of brainwasher
+
+Variant: brainwasher-285FD7FD-86D6-490C-A0C7-9F89D7A9A7FD.ipa
+Supported variant descriptors: [device: iPad3,2, os-version: 9.0], [device: iPad3,5, os-version: 9.0], [device: iPad3,3, os-version: 9.0], [device: iPad3,4, os-version: 9.0], [device: iPad3,6, os-version: 9.0], and [device: iPad3,1, os-version: 9.0]
+App + On Demand Resources size: 4.7 MB compressed, 7.8 MB uncompressed
+App size: 4.7 MB compressed, 7.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-34A97BD0-08D9-413E-88E3-0CF49ADAF026.ipa
+Supported variant descriptors: [device: iPhone5,1, os-version: 9.0], [device: iPhone5,3, os-version: 9.0], [device: iPod5,1, os-version: 9.0], [device: iPhone4,1, os-version: 9.0], [device: iPhone5,2, os-version: 9.0], and [device: iPhone5,4, os-version: 9.0]
+App + On Demand Resources size: 4.7 MB compressed, 7.8 MB uncompressed
+App size: 4.7 MB compressed, 7.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-388718BD-37F8-4EA4-850B-4F296881DB60.ipa
+Supported variant descriptors: [device: iPhone10,1, os-version: 11.0], [device: iPhone9,3, os-version: 10.0], [device: iPhone10,4, os-version: 11.0], [device: iPhone6,1, os-version: 9.0], [device: iPhone8,1, os-version: 9.0], [device: iPod7,1, os-version: 9.0], [device: iPhone9,1, os-version: 10.0], [device: iPhone7,2, os-version: 9.0], [device: iPhone8,4, os-version: 9.0], and [device: iPhone6,2, os-version: 9.0]
+App + On Demand Resources size: 4.6 MB compressed, 8 MB uncompressed
+App size: 4.6 MB compressed, 8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-3C1A2AEB-1CA3-47F0-9066-FC14584C17D9.ipa
+Supported variant descriptors: [device: iPad6,11, os-version: 12.2], [device: iPad7,1, os-version: 12.2], [device: iPad5,4, os-version: 12.2], [device: iPad6,8, os-version: 12.0], [device: iPad11,2, os-version: 12.2], [device: iPad4,2, os-version: 12.0], [device: iPad6,3, os-version: 12.0], [device: iPad6,4, os-version: 12.2], [device: iPad8,3, os-version: 12.0], [device: iPad4,7, os-version: 12.0], [device: iPad6,3, os-version: 12.2], [device: iPad7,6, os-version: 12.2], [device: iPad5,3, os-version: 12.0], [device: iPad7,5, os-version: 12.2], [device: iPad6,4, os-version: 12.0], [device: iPad8,7, os-version: 12.2], [device: iPad4,8, os-version: 12.0], [device: iPad4,3, os-version: 12.0], [device: iPad8,4, os-version: 12.0], [device: iPad6,12, os-version: 12.0], [device: iPad11,4, os-version: 12.2], [device: iPad8,5, os-version: 12.2], [device: iPad6,7, os-version: 12.2], [device: iPad4,9, os-version: 12.2], [device: iPad11,1, os-version: 12.2], [device: iPad6,12, os-version: 12.2], [device: iPad7,4, os-version: 12.0], [device: iPad5,4, os-version: 12.0], [device: iPad11,3, os-version: 12.2], [device: iPad7,3, os-version: 12.2], [device: iPad8,4, os-version: 12.2], [device: iPad4,5, os-version: 12.2], [device: iPad7,3, os-version: 12.0], [device: iPad8,2, os-version: 12.0], [device: iPad8,5, os-version: 12.0], [device: iPad6,7, os-version: 12.0], [device: iPad4,4, os-version: 12.0], [device: iPad4,1, os-version: 12.0], [device: iPad8,6, os-version: 12.0], [device: iPad7,5, os-version: 12.0], [device: iPad7,6, os-version: 12.0], [device: iPad5,1, os-version: 12.0], [device: iPad4,6, os-version: 12.0], [device: iPad4,9, os-version: 12.0], [device: iPad5,2, os-version: 12.0], [device: iPad7,1, os-version: 12.0], [device: iPad8,7, os-version: 12.0], [device: iPad4,6, os-version: 12.2], [device: iPad8,1, os-version: 12.0], [device: iPad4,2, os-version: 12.2], [device: iPad5,1, os-version: 12.2], [device: iPad8,3, os-version: 12.2], [device: iPad8,8, os-version: 12.2], [device: iPad4,8, os-version: 12.2], [device: iPad8,1, os-version: 12.2], [device: iPad8,8, os-version: 12.0], [device: iPad4,5, os-version: 12.0], [device: iPad6,11, os-version: 12.0], [device: iPad7,2, os-version: 12.2], [device: iPad8,6, os-version: 12.2], [device: iPad4,4, os-version: 12.2], [device: iPad4,1, os-version: 12.2], [device: iPad8,2, os-version: 12.2], [device: iPad7,4, os-version: 12.2], [device: iPad7,2, os-version: 12.0], [device: iPad6,8, os-version: 12.2], [device: iPad4,3, os-version: 12.2], [device: iPad5,2, os-version: 12.2], [device: iPad4,7, os-version: 12.2], and [device: iPad5,3, os-version: 12.2]
+App + On Demand Resources size: 4.5 MB compressed, 7.8 MB uncompressed
+App size: 4.5 MB compressed, 7.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-52CFB4A4-CA77-411D-8009-0CE62C5006B2.ipa
+Supported variant descriptors: [device: iPad6,8, os-version: 9.0], [device: iPad6,12, os-version: 10.0], [device: iPad4,2, os-version: 9.0], [device: iPad4,4, os-version: 9.0], [device: iPad7,2, os-version: 10.0], [device: iPad6,11, os-version: 10.0], [device: iPad4,3, os-version: 9.0], [device: iPad7,5, os-version: 11.0], [device: iPad5,1, os-version: 9.0], [device: iPad7,1, os-version: 10.0], [device: iPad6,3, os-version: 9.0], [device: iPad7,6, os-version: 11.0], [device: iPad5,4, os-version: 9.0], [device: iPad4,6, os-version: 9.0], [device: iPad5,2, os-version: 9.0], [device: iPad5,3, os-version: 9.0], [device: iPad4,8, os-version: 9.0], [device: iPad7,3, os-version: 10.0], [device: iPad4,9, os-version: 9.0], [device: iPad6,4, os-version: 9.0], [device: iPad4,5, os-version: 9.0], [device: iPad4,7, os-version: 9.0], [device: iPad7,4, os-version: 10.0], [device: iPad4,1, os-version: 9.0], and [device: iPad6,7, os-version: 9.0]
+App + On Demand Resources size: 4.6 MB compressed, 8 MB uncompressed
+App size: 4.6 MB compressed, 8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-5FE46410-2FA2-4AF2-9A6D-94A90005C25F.ipa
+Supported variant descriptors: [device: iPod7,1, os-version: 12.0], [device: iPhone6,2, os-version: 12.0], [device: iPhone6,1, os-version: 12.2], [device: iPhone9,3, os-version: 12.0], [device: iPhone10,4, os-version: 12.0], [device: iPhone9,3, os-version: 12.2], [device: iPhone7,2, os-version: 12.2], [device: iPhone9,1, os-version: 12.0], [device: iPhone7,2, os-version: 12.0], [device: iPhone8,1, os-version: 12.0], [device: iPod9,1, os-version: 12.2], [device: iPhone11,8, os-version: 12.0], [device: iPhone6,2, os-version: 12.2], [device: iPhone8,4, os-version: 12.0], [device: iPhone8,1, os-version: 12.2], [device: iPhone10,1, os-version: 12.2], [device: iPhone11,8, os-version: 12.2], [device: iPod7,1, os-version: 12.2], [device: iPhone6,1, os-version: 12.0], [device: iPhone8,4, os-version: 12.2], [device: iPhone9,1, os-version: 12.2], [device: iPhone10,1, os-version: 12.0], and [device: iPhone10,4, os-version: 12.2]
+App + On Demand Resources size: 4.5 MB compressed, 7.8 MB uncompressed
+App size: 4.5 MB compressed, 7.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-A30E8A9D-BE2A-455D-945F-3215324D95E8.ipa
+Supported variant descriptors: [device: iPhone8,4, os-version: 13.0], [device: iPhone9,1, os-version: 13.0], [device: iPhone9,3, os-version: 13.0], [device: iPhone8,1, os-version: 13.0], [device: iPod9,1, os-version: 13.0], [device: iPhone10,1, os-version: 13.0], [device: iPhone10,4, os-version: 13.0], and [device: iPhone11,8, os-version: 13.0]
+App + On Demand Resources size: 4.5 MB compressed, 7.8 MB uncompressed
+App size: 4.5 MB compressed, 7.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-AD2037C3-FCFE-461D-BF1B-DA3057CEB729.ipa
+Supported variant descriptors: [device: iPad8,6, os-version: 13.0], [device: iPad11,2, os-version: 13.0], [device: iPad6,12, os-version: 13.0], [device: iPad7,5, os-version: 13.0], [device: iPad5,1, os-version: 13.0], [device: iPad8,5, os-version: 13.0], [device: iPad7,1, os-version: 13.0], [device: iPad5,4, os-version: 13.0], [device: iPad8,8, os-version: 13.0], [device: iPad11,3, os-version: 13.0], [device: iPad5,3, os-version: 13.0], [device: iPad7,6, os-version: 13.0], [device: iPad7,3, os-version: 13.0], [device: iPad8,3, os-version: 13.0], [device: iPad8,1, os-version: 13.0], [device: iPad5,2, os-version: 13.0], [device: iPad7,4, os-version: 13.0], [device: iPad6,4, os-version: 13.0], [device: iPad6,11, os-version: 13.0], [device: iPad8,7, os-version: 13.0], [device: iPad6,3, os-version: 13.0], [device: iPad8,2, os-version: 13.0], [device: iPad11,4, os-version: 13.0], [device: iPad8,4, os-version: 13.0], [device: iPad7,2, os-version: 13.0], [device: iPad6,7, os-version: 13.0], [device: iPad11,1, os-version: 13.0], and [device: iPad6,8, os-version: 13.0]
+App + On Demand Resources size: 4.5 MB compressed, 7.8 MB uncompressed
+App size: 4.5 MB compressed, 7.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-AFEDB847-6073-4EAD-B4CE-2680C1121769.ipa
+Supported variant descriptors: [device: iPhone10,3, os-version: 11.0], [device: iPhone10,2, os-version: 11.0], [device: iPhone8,2, os-version: 9.0], [device: iPhone10,6, os-version: 11.0], [device: iPhone9,2, os-version: 10.0], [device: iPhone9,4, os-version: 10.0], [device: iPhone10,5, os-version: 11.0], and [device: iPhone7,1, os-version: 9.0]
+App + On Demand Resources size: 4.7 MB compressed, 8 MB uncompressed
+App size: 4.7 MB compressed, 8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-B7338E4F-691E-4FF0-907C-680475A2A4EF.ipa
+Supported variant descriptors: [device: iPad2,7, os-version: 9.0], [device: iPad2,2, os-version: 9.0], [device: iPad2,5, os-version: 9.0], [device: iPad2,1, os-version: 9.0], [device: iPad2,4, os-version: 9.0], [device: iPad2,6, os-version: 9.0], and [device: iPad2,3, os-version: 9.0]
+App + On Demand Resources size: 4.7 MB compressed, 7.8 MB uncompressed
+App size: 4.7 MB compressed, 7.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-C7624B72-66EE-43BA-A8BE-BAE900AF5BBC.ipa
+Supported variant descriptors: [device: iPhone10,5, os-version: 12.0], [device: iPhone10,5, os-version: 12.2], [device: iPhone11,4, os-version: 12.2], [device: iPhone10,3, os-version: 12.2], [device: iPhone10,2, os-version: 12.2], [device: iPhone9,2, os-version: 12.0], [device: iPhone11,6, os-version: 12.0], [device: iPhone10,2, os-version: 12.0], [device: iPhone11,2, os-version: 12.2], [device: iPhone7,1, os-version: 12.2], [device: iPhone9,2, os-version: 12.2], [device: iPhone9,4, os-version: 12.0], [device: iPhone8,2, os-version: 12.2], [device: iPhone8,2, os-version: 12.0], [device: iPhone10,6, os-version: 12.0], [device: iPhone11,4, os-version: 12.0], [device: iPhone11,2, os-version: 12.0], [device: iPhone10,6, os-version: 12.2], [device: iPhone10,3, os-version: 12.0], [device: iPhone11,6, os-version: 12.2], [device: iPhone9,4, os-version: 12.2], and [device: iPhone7,1, os-version: 12.0]
+App + On Demand Resources size: 4.5 MB compressed, 7.9 MB uncompressed
+App size: 4.5 MB compressed, 7.9 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher-E6AB7F81-4E24-4649-BB2F-370B11E0FA9D.ipa
+Supported variant descriptors: [device: iPhone11,2, os-version: 13.0], [device: iPhone10,3, os-version: 13.0], [device: iPhone10,2, os-version: 13.0], [device: iPhone11,4, os-version: 13.0], [device: iPhone9,4, os-version: 13.0], [device: iPhone9,2, os-version: 13.0], [device: iPhone8,2, os-version: 13.0], [device: iPhone10,6, os-version: 13.0], [device: iPhone11,6, os-version: 13.0], and [device: iPhone10,5, os-version: 13.0]
+App + On Demand Resources size: 4.5 MB compressed, 7.9 MB uncompressed
+App size: 4.5 MB compressed, 7.9 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: brainwasher.ipa
+Supported variant descriptors: Universal
+App + On Demand Resources size: 12.3 MB compressed, 16.7 MB uncompressed
+App size: 12.3 MB compressed, 16.7 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
