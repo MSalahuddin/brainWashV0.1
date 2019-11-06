@@ -9,7 +9,13 @@ import {success, failure} from '../actions/EditProfileAction';
 import {ErrorHelper} from '../helpers';
 function callRequest(data) {
   console.log('ye raha data', data);
-  return ApiSauce.postWithToken(Editprofile_Api, data.payload, data.token);
+  let setData = new FormData();
+  setData.append('bio', data.payload.bio);
+  setData.append('graduation', data.payload.graduation);
+  setData.append('id', data.payload.id);
+  setData.append('image', data.payload.image);
+  setData.append('name', data.payload.name);
+  return ApiSauce.postWithTokenMultipart(Editprofile_Api, setData, data.token);
 }
 let a = 1;
 function* watchRequest() {
@@ -17,8 +23,7 @@ function* watchRequest() {
     a++;
     const {payload} = yield take(types.EDITPROFILE.REQUEST);
     console.log('aaaaaaaaaaaaaaaaaaaaaaaaa', payload);
-    // const { targetView } = payload;
-    // delete payload.targetView;
+
     try {
       const response = yield call(callRequest, payload);
 

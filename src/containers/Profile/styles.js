@@ -35,11 +35,11 @@ export default StyleSheet.create({
     position: 'absolute',
     top: Metrics.ratio(-85),
     left: Metrics.ratio(100),
-    backgroundColor: 'red',
   },
   profileImg: {
     width: Metrics.ratio(130),
     height: Metrics.ratio(130),
+    borderRadius: 100,
   },
   UserName: {
     marginTop: Metrics.ratio(60),

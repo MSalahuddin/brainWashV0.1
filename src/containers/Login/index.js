@@ -32,7 +32,7 @@ class LoginScreen extends Component {
       password: 'A1234567',
       isloading: false,
       showpassword: true,
-      device_token: 'asdfghjkl122423534525435435423514124214',
+      device_token: '',
       device_type: '',
       validationError: {emailErr: false, passErr: false},
       error: {emailErr: false, passErr: false},
@@ -51,7 +51,6 @@ class LoginScreen extends Component {
       .then(enabled => {
         if (enabled) {
           this.gettoken();
-          // user has permissions
         } else {
           // user doesn't have permission
         }
@@ -59,7 +58,7 @@ class LoginScreen extends Component {
   };
   gettoken = async () => {
     const fcmToken = await firebase.messaging().getToken();
-
+    console.log(fcmToken, 'fcmTokenfcmTokenfcmTokenfcmToken');
     if (fcmToken) {
       this.setState({device_token: fcmToken});
       // console.log(this.state)
