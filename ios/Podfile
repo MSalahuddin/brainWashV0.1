@@ -41,7 +41,7 @@ rn_maps_path = '../node_modules/react-native-maps'
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
 
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+  # pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
 
   target 'vrainwasherTests' do
     inherit! :search_paths
