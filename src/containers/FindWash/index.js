@@ -495,8 +495,9 @@ class FindWashScreen extends Component {
       <View style={styles.inputFieldView}>
         {tooltip == true && (
           <Tooltip
+          // arrowSize={{ width: 8, height: 8} }
             isVisible={this.state.toolTipVisible}
-            content={<Text>Check this out!</Text>}
+            content={<Text>Customer's has to be provide their own hangers</Text>}
             placement="top"
             onClose={() => this.setState({ toolTipVisible: false })}>
             <TouchableHighlight style={styles.touchable}>
