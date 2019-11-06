@@ -59,7 +59,7 @@ class UserStatusScreen extends Component {
     return (
       <View style={styles.statuscard}>
         <View style={styles.statusHead}>
-          <Text style={styles.statusHeadTxt}>Order Status</Text>
+          <Text style={styles.statusHeadTxt}>Order Details</Text>
         </View>
         <View style={styles.statusImg}>
           {order && order.user.details && order.user.details.image_url && (

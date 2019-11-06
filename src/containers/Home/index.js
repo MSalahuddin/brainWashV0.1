@@ -45,18 +45,25 @@ class HeaderComponent extends Component {
             </View>
           </TouchableOpacity>
 
-          <View style={styles.logoContainer}>
-            <Image
-              source={Images.logo}
-              style={{
-                width: Metrics.ratio(175),
-                height: Metrics.ratio(56),
-                marginBottom: Metrics.ratio(15),
-                alignContent: 'center',
-              }}
-              resizeMethod="auto"
-              resizeMode="cover"
-            />
+          <View
+            style={{
+              width: Metrics.screenWidth,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View style={styles.logoContainer}>
+              <Image
+                source={Images.logo}
+                style={{
+                  width: Metrics.ratio(175),
+                  height: Metrics.ratio(56),
+                  marginBottom: Metrics.ratio(15),
+                  alignContent: 'center',
+                }}
+                resizeMethod="auto"
+                resizeMode="cover"
+              />
+            </View>
           </View>
         </View>
       </ImageBackground>
