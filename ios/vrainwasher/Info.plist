@@ -41,6 +41,12 @@
 	<string>Allow access location to access your current location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allow access location to access your current location</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Please allow camera permission</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please allow gallery permission</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Please allow permission</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AvenirNext-Bold.ttf</string>
