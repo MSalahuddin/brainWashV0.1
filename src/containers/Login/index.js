@@ -38,16 +38,12 @@ class LoginScreen extends Component {
       error: {emailErr: false, passErr: false},
     };
   }
+
   componentDidMount() {
-    
     this.setState({device_type: Platform.OS});
-    // this.getpermission();
-    this.gettoken()
+    this.gettoken();
   }
-  tok = async () => {
-    const fcmToken = await firebase.messaging().getToken();
-    console.log(fcmToken,'fjjjjjnknklajskdjkl')
-  }
+
   getpermission = () => {
     firebase
       .messaging()
@@ -60,13 +56,14 @@ class LoginScreen extends Component {
         }
       });
   };
+
   gettoken = async () => {
     const fcmToken = await firebase.messaging().getToken();
-    console.log(fcmToken,'fjjjjjnknklajskdjkl')
     if (fcmToken) {
       this.setState({device_token: fcmToken});
     }
   };
+
   _storeUserdata = async user => {
     try {
       await AsyncStorage.setItem('@storage_Key', JSON.stringify(user));
@@ -75,6 +72,7 @@ class LoginScreen extends Component {
       // saving error
     }
   };
+
   getData = async () => {
     try {
       const value = await AsyncStorage.getItem('@storage_Key');
@@ -99,11 +97,15 @@ class LoginScreen extends Component {
 
         this._storeUserdata(nextProps.login.data.data);
         this.getData();
+        console.log(
+          nextProps.login.data.data,
+          'nextProps.login.data.datanextProps.login.data.datanextProps.login.data.data',
+        );
         this.props.updateUser(nextProps.login.data.data);
 
         // AsyncStorage.setItem('User', nextProps.login.data.data);
         // this.props.navigation.navigate("dashboard");
-      } else if(nextProps.login.failure && !nextProps.login.isFetching)  {
+      } else if (nextProps.login.failure && !nextProps.login.isFetching) {
         this.setState({isloading: false});
       }
     }

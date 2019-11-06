@@ -3,6 +3,7 @@ import register from './register';
 import userReducer from './userReduces';
 import orderreducer from './OrderReducer';
 import washHistory from './washhistoryreducer';
+import editProfile from './editprofilereducer';
 import {combineReducers} from 'redux';
 
 export const rootReducer = combineReducers({
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   userReducer,
   orderreducer,
   washHistory,
+  editProfile,
 });

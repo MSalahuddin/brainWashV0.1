@@ -38,24 +38,65 @@ class ProfileScreeen extends Component {
       // profile_pic:'',
       profileImg: null,
       showUpdateProfile: false,
+      isloading: false,
+      access_token: null,
     };
   }
+
   onStarRatingPress(rating) {
     this.setState({
       starCount: rating,
     });
   }
   componentDidMount() {
-    console.log(this.props);
+    console.log(this.props.user.user, '`iiiiiiiiiiiiiiiii`');
 
     this.setState({
       user: this.props.user.user,
       userDetails: this.props.user.user.details,
+      access_token: this.props.user.user.access_token,
     });
   }
-  componentWillReceiveProps(nextprops){
-    console.log("next====>",nextprops);
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps, 'nennnnnnnnnnnnnnn');
+    if (nextProps.editProfile) {
+      if (
+        !nextProps.editProfile.failure &&
+        !nextProps.editProfile.isFetching &&
+        nextProps.editProfile.data.data &&
+        nextProps.editProfile.data.success
+      ) {
+        this.setState({isloading: false});
+        console.log(
+          nextProps.editProfile.data.data,
+          'nennnnnnnnnnnnnnnnnnnnnnn',
+        );
+        let access_token = this.state.access_token;
+        let obj = {access_token};
+        let user = nextProps.editProfile.data.data;
+        user = {...user, ...obj};
+        nextProps.editProfile.data.data.access_token = this.state.access_token;
+        console.log(user, 'kkkkkkkkkkkjjjjjjjjjnnnnnnnnn');
+        this._storeUserdata({user: user});
+        // this.getData();
+        this.props.updateUser({user: user});
+      } else if (
+        nextProps.editProfile.failure &&
+        !nextProps.editProfile.isFetching
+      ) {
+        this.setState({isloading: false});
+      }
+    }
   }
+
+  _storeUserdata = async user => {
+    try {
+      await AsyncStorage.setItem('@storage_Key', JSON.stringify(user));
+      // this.props.updateUser(user)
+    } catch (e) {
+      // saving error
+    }
+  };
 
   openCamera = async get => {
     let options = {
@@ -584,7 +625,8 @@ class ProfileScreeen extends Component {
 
 const mapStateToProps = state => ({
   user: state.userReducer.user,
-  profile: state
+  profile: state,
+  editProfile: state.editProfile,
 });
 
 const actions = {
