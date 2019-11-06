@@ -19,8 +19,8 @@ function callRequest(data) {
 }
 let a = 1;
 function* watchRequest() {
-  while (a === 1) {
-    a++;
+  while (true) {
+  
     const {payload} = yield take(types.EDITPROFILE.REQUEST);
 
     try {
