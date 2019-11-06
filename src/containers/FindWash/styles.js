@@ -107,7 +107,9 @@ export default StyleSheet.create({
   },
   touchableText: {
     color: 'white',
-    textAlign: 'center',
+    textAlign: 'left',
+    // width:Metrics.ratio(10)
+
   },
   largeText: {
     color: 'white',
