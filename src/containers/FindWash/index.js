@@ -1,6 +1,6 @@
 // @flow
-import {connect} from 'react-redux';
-import React, {Component} from 'react';
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import {
   Text,
   View,
@@ -17,31 +17,32 @@ import {
 } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import styles from './styles';
-import {Header} from '../../components';
-import {Fonts, Metrics, Images} from '../../theme';
+import { Header } from '../../components';
+import { Fonts, Metrics, Images } from '../../theme';
 import DatePicker from 'react-native-datepicker';
 // import MapView from 'react-native-maps';
 import CheckBox from 'react-native-check-box';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button';
 // import MapView from 'react-native-maps';
 // import GooglePlacesInput from './autoCompleteInput';
 import Geolocation from '@react-native-community/geolocation';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {updateUser, removeUser} from '../../actions/userAction';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { updateUser, removeUser } from '../../actions/userAction';
 import configureStore from '../../store';
 import {request as order_request} from '../../actions/OrderAction';
-import {exportDefaultSpecifier} from '@babel/types';
 import RNPickerSelect from 'react-native-picker-select';
+// import { request as order_request } from '../../actions/OrderAction';
+// import { exportDefaultSpecifier } from '@babel/types';
 
 const homePlace = {
   description: 'Home',
-  geometry: {location: {lat: 48.8152937, lng: 2.4597668}},
+  geometry: { location: { lat: 48.8152937, lng: 2.4597668 } },
 };
 const workPlace = {
   description: 'Work',
-  geometry: {location: {lat: 48.8496818, lng: 2.2940881}},
+  geometry: { location: { lat: 48.8496818, lng: 2.2940881 } },
 };
 
 const GooglePlacesInput = getlocation => {
@@ -115,8 +116,8 @@ const GooglePlacesInput = getlocation => {
       // predefinedPlaces={[homePlace, workPlace]}
 
       debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-      // renderLeftButton={()  => <Image source={Images.chatIcon} />}
-      // renderRightButton={() => <Text>Custom text after the input</Text>}
+    // renderLeftButton={()  => <Image source={Images.chatIcon} />}
+    // renderRightButton={() => <Text>Custom text after the input</Text>}
     />
   );
 };
@@ -192,7 +193,7 @@ class FindWashScreen extends Component {
     console.log('Remove event listner');
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
-  findCords = () => {};
+  findCords = () => { };
   componentWillReceiveProps(nextprops) {
     console.log('======>', nextprops);
   }
@@ -200,25 +201,25 @@ class FindWashScreen extends Component {
   // get Current Location
 
   // Input Field Handling
-  onchangeRequest = () => {};
+  onchangeRequest = () => { };
   onChangeNoofbags = val => {
-    this.setState({Nofofbags: val, total: 5 * val + 1});
+    this.setState({ Nofofbags: val, total: 5 * val + 1 });
   };
   onchangeDetergent = e => {
     console.log(e);
-    this.setState({ownDetergents: e});
+    this.setState({ ownDetergents: e });
   };
   onchangeHung = e => {
-    this.setState({hung: e});
+    this.setState({ hung: e });
   };
   onchangeInstruction = e => {
-    this.setState({special_instruction: e});
+    this.setState({ special_instruction: e });
   };
   onchangeFolded = e => {
-    this.setState({folded: e});
+    this.setState({ folded: e });
   };
-  onchangeScholarship = () => {};
-  onchangePrice = () => {};
+  onchangeScholarship = () => { };
+  onchangePrice = () => { };
   // Back Button Handle
   handleBackPress = () => {
     if (this.state.showPickup) {
@@ -234,7 +235,7 @@ class FindWashScreen extends Component {
   };
 
   crateStore = () => {
-    const {hung, folded, detergent} = this.state;
+    const { hung, folded, detergent } = this.state;
     var type;
     if (this.state.genderRequest == true) {
       type = 1;
@@ -261,36 +262,36 @@ class FindWashScreen extends Component {
     };
     console.log(data.hung, data.folded, data.detergent, 'errrrrr');
     if (!this.state.Nofofbags) {
-      this.setState({bagErr: true});
+      this.setState({ bagErr: true });
       setTimeout(() => {
-        this.setState({bagErr: false});
+        this.setState({ bagErr: false });
       }, 3000);
     }
     if (data.detergent == '') {
       console.log('deterge');
-      this.setState({detergentErr: true});
+      this.setState({ detergentErr: true });
       setTimeout(() => {
-        this.setState({detergentErr: false});
+        this.setState({ detergentErr: false });
       }, 3000);
     }
     if (data.folded == '') {
       console.log('folder');
-      this.setState({foldedErr: true});
+      this.setState({ foldedErr: true });
       setTimeout(() => {
-        this.setState({foldedErr: false});
+        this.setState({ foldedErr: false });
       }, 3000);
     }
     if (data.detergent == '') {
       console.log('hung');
-      this.setState({HungErr: true});
+      this.setState({ HungErr: true });
       setTimeout(() => {
-        this.setState({HungErr: false});
+        this.setState({ HungErr: false });
       }, 3000);
     } else {
       console.log(data);
       this.props.order_request(data);
       Alert.alert('SUCCESSFUL', 'Ordered has been placed', [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
       this.props.navigation.pop();
     }
@@ -341,7 +342,7 @@ class FindWashScreen extends Component {
               borderBottomColor: '#b4b4b4',
               marginBottom: Metrics.ratio(10),
             },
-            Platform.OS === 'ios' && {marginVertical: Metrics.ratio(8)},
+            Platform.OS === 'ios' && { marginVertical: Metrics.ratio(8) },
           ]}>
           <Image
             source={image}
@@ -351,7 +352,7 @@ class FindWashScreen extends Component {
                 height: Metrics.ratio(20),
                 marginTop: Metrics.ratio(6),
               },
-              Platform.OS === 'ios' && {marginBottom: Metrics.ratio(7)},
+              Platform.OS === 'ios' && { marginBottom: Metrics.ratio(7) },
             ]}
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
@@ -369,15 +370,15 @@ class FindWashScreen extends Component {
         />
           {/* <Picker
             selectedValue={this.state.Nofofbags}
-            style={{height: 50, width: 100}}
+            style={{ height: 50, width: 100 }}
             onValueChange={(itemValue, itemIndex) => {
               var total = 10.99;
               if (itemValue == '1') {
                 total = total + 1;
-                this.setState({Nofofbags: itemValue, total: total});
+                this.setState({ Nofofbags: itemValue, total: total });
               } else if (itemValue == '2') {
                 total = total + 7.99 + 1;
-                this.setState({Nofofbags: itemValue, total: total});
+                this.setState({ Nofofbags: itemValue, total: total });
               }
               console.log(this.state.Nofofbags);
             }}>
@@ -387,7 +388,7 @@ class FindWashScreen extends Component {
         </View>
         {Iserr && (
           <View>
-            <Text style={{color: 'red'}}>**{ErrTxt}</Text>
+            <Text style={{ color: 'red' }}>**{ErrTxt}</Text>
           </View>
         )}
       </View>
@@ -417,7 +418,7 @@ class FindWashScreen extends Component {
               borderBottomColor: '#b4b4b4',
               marginBottom: Metrics.ratio(10),
             },
-            Platform.OS === 'ios' && {marginVertical: Metrics.ratio(8)},
+            Platform.OS === 'ios' && { marginVertical: Metrics.ratio(8) },
           ]}>
           <Image
             source={image}
@@ -427,7 +428,7 @@ class FindWashScreen extends Component {
                 height: Metrics.ratio(20),
                 marginTop: Metrics.ratio(6),
               },
-              Platform.OS === 'ios' && {marginBottom: Metrics.ratio(7)},
+              Platform.OS === 'ios' && { marginBottom: Metrics.ratio(7) },
             ]}
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
@@ -446,7 +447,7 @@ class FindWashScreen extends Component {
         </View>
         {Iserr && (
           <View>
-            <Text style={{color: 'red'}}>**{ErrTxt}</Text>
+            <Text style={{ color: 'red' }}>**{ErrTxt}</Text>
           </View>
         )}
       </View>
@@ -487,7 +488,7 @@ class FindWashScreen extends Component {
         </View>
         {Iserr && (
           <View>
-            <Text style={{color: 'red'}}>**{ErrTxt}</Text>
+            <Text style={{ color: 'red' }}>**{ErrTxt}</Text>
           </View>
         )}
       </View>
@@ -512,7 +513,7 @@ class FindWashScreen extends Component {
             isVisible={this.state.toolTipVisible}
             content={<Text>Check this out!</Text>}
             placement="top"
-            onClose={() => this.setState({toolTipVisible: false})}>
+            onClose={() => this.setState({ toolTipVisible: false })}>
             <TouchableHighlight style={styles.touchable}>
               <Text style={styles.inputFieldHeaderText}>{headerText}</Text>
             </TouchableHighlight>
@@ -548,7 +549,7 @@ class FindWashScreen extends Component {
         </View>
         {Iserr && (
           <View>
-            <Text style={{color: 'red'}}>**{ErrTxt}</Text>
+            <Text style={{ color: 'red' }}>**{ErrTxt}</Text>
           </View>
         )}
       </View>
@@ -571,7 +572,7 @@ class FindWashScreen extends Component {
           marginBottom: Metrics.ratio(10),
         }}>
         <Text style={styles.inputFieldHeaderText}>{headerText}</Text>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <CheckBox
             style={{
               width: Metrics.ratio(25),
@@ -586,7 +587,7 @@ class FindWashScreen extends Component {
             }}
             checkedImage={
               <Image
-                style={{width: Metrics.ratio(14), height: Metrics.ratio(14)}}
+                style={{ width: Metrics.ratio(14), height: Metrics.ratio(14) }}
                 source={Images.tickIcon}
               />
             }
@@ -600,7 +601,7 @@ class FindWashScreen extends Component {
             }}
             isChecked={this.state.genderRequest}
           />
-          <Text style={{marginTop: Metrics.ratio(10)}}>{placeholder1}</Text>
+          <Text style={{ marginTop: Metrics.ratio(10) }}>{placeholder1}</Text>
         </View>
       </View>
     );
@@ -677,13 +678,33 @@ class FindWashScreen extends Component {
               this.state.pickup.longitude !== null && (
                 <MapView
                   // mapType={Platform.OS == "android" ? "none" : "standard"}
+                  onRegionChange={(e)=>{
+                    this.setState({
+                      pickup: {
+                      latitude: e.latitude,
+                      longitude: e.longitude,
+                      latitudeDelta: 0.015,
+                      longitudeDelta: 0.0121
+                    }})
+                  }}
+                  onPress={(e) => {
+                    console.log(e.nativeEvent)
+
+                    this.setState({
+                      pickup: {
+                      latitude: e.nativeEvent.coordinate.latitude,
+                      longitude: e.nativeEvent.coordinate.longitude,
+                      latitudeDelta: 0.015,
+                      longitudeDelta: 0.0121
+                    }})
+                  }}
                   provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-                  style={{...StyleSheet.absoluteFillObject}}
+                  style={{ ...StyleSheet.absoluteFillObject }}
                   region={this.state.pickup}>
                   <Marker
                     draggable={true}
                     title="This is a title"
-                    style={{width: 40, height: 40}}
+                    style={{ width: 40, height: 40 }}
                     coordinate={this.state.pickup}
                     onDragEnd={e => {
                       this.setState({
@@ -708,7 +729,7 @@ class FindWashScreen extends Component {
               }}
               style={[
                 styles.submitButtonView,
-                {marginLeft: Metrics.screenWidth * 0.05},
+                { marginLeft: Metrics.screenWidth * 0.05 },
               ]}>
               {/* <Image
         source={Images.submitButtonIcon}
@@ -780,8 +801,29 @@ class FindWashScreen extends Component {
             {this.state.dropoff && (
               <MapView
                 // mapType={Platform.OS == "android" ? "none" : "standard"}
+                onRegionChange={(e)=>{
+                  this.setState({
+                    dropoff: {
+                    latitude: e.latitude,
+                    longitude: e.longitude,
+                    latitudeDelta: 0.015,
+                    longitudeDelta: 0.0121
+                  }})
+                }}
+                onPress={(e) => {
+                  console.log(e.nativeEvent)
+
+                  this.setState({
+                    dropoff: {
+                    latitude: e.nativeEvent.coordinate.latitude,
+                    longitude: e.nativeEvent.coordinate.longitude,
+                    latitudeDelta: 0.015,
+                    longitudeDelta: 0.0121
+                  }})
+                }
+              }
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-                style={{...StyleSheet.absoluteFillObject}}
+                style={{ ...StyleSheet.absoluteFillObject }}
                 region={this.state.dropoff}>
                 <Marker
                   draggable={true}
@@ -810,7 +852,7 @@ class FindWashScreen extends Component {
               }}
               style={[
                 styles.submitButtonView,
-                {marginLeft: Metrics.screenWidth * 0.05},
+                { marginLeft: Metrics.screenWidth * 0.05 },
               ]}>
               {/* <Image
         source={Images.submitButtonIcon}

@@ -53,6 +53,9 @@ class ProfileScreeen extends Component {
       userDetails: this.props.user.user.details,
     });
   }
+  componentWillReceiveProps(nextprops){
+    console.log("next====>",nextprops);
+  }
 
   openCamera = async get => {
     let options = {
@@ -127,6 +130,7 @@ class ProfileScreeen extends Component {
     console.log(token);
     var datawithtoken = {token: token, payload: payload};
     this.props.Edit_profile(datawithtoken);
+    // this.props.navigation.navigate('dashborad')
   };
   renderInputfield = (
     headerText,
@@ -580,7 +584,7 @@ class ProfileScreeen extends Component {
 
 const mapStateToProps = state => ({
   user: state.userReducer.user,
-  profile: state,
+  profile: state
 });
 
 const actions = {
