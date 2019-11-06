@@ -610,6 +610,8 @@ class ProfileScreeen extends Component {
         <Header
           headerText={'BRAINWASH PROFILE'}
           leftIcon={Images.LeftArrow}
+          headerIconStyle={{marginLeft: Metrics.ratio(15)}}
+          headerTextStyle={{marginLeft: Metrics.ratio(20)}}
           leftBtnPress={() => this.props.navigation.navigate('dashboard')}
         />
         <ScrollView keyboardShouldPersistTaps="always">

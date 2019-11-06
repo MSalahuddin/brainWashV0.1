@@ -1,10 +1,10 @@
-import { connect } from "react-redux";
-import React, { Component } from "react";
-import { Text, View, Image, TouchableOpacity, Platform } from "react-native";
-import styles from "./styles";
-import { Images, Metrics } from "../../theme";
-import PropTypes from "prop-types";
-import Icon from "react-native-vector-icons/FontAwesome";
+import {connect} from 'react-redux';
+import React, {Component} from 'react';
+import {Text, View, Image, TouchableOpacity, Platform} from 'react-native';
+import styles from './styles';
+import {Images, Metrics} from '../../theme';
+import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class Header extends Component {
   static propTypes = {
@@ -18,10 +18,11 @@ class Header extends Component {
     headerTextStyle: PropTypes.object,
     rightIconStyle: PropTypes.object,
     productQuantity: PropTypes.number,
-    itemQuantity: PropTypes.number
+    itemQuantity: PropTypes.number,
+    headerIconStyle: PropTypes.object,
   };
   static defaultProps = {
-    headerText: "",
+    headerText: '',
     leftIcon: undefined,
     rightIcon: undefined,
     leftBtnPress: undefined,
@@ -30,7 +31,8 @@ class Header extends Component {
     rightIconStyle: undefined,
     rightBtnPress: undefined,
     productQuantity: undefined,
-    itemQuantity: undefined
+    itemQuantity: undefined,
+    headerIconStyle: undefined,
   };
   render() {
     const {
@@ -41,7 +43,8 @@ class Header extends Component {
       headerTextStyle,
       rightIconStyle,
       rightBtnPress,
-      itemQuantity
+      itemQuantity,
+      headerIconStyle,
     } = this.props;
 
     return (
@@ -50,33 +53,41 @@ class Header extends Component {
           style={[
             styles.TouchableMenu,
             {
-              justifyContent: "center",
-              alignItems: "center"
-            }
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
           ]}
-          onPress={leftBtnPress}
-        >
-          <Image
-            style={{ paddingTop: Metrics.ratio(5) }}
-            source={leftIcon}
-          />
+          onPress={leftBtnPress}>
+          <Image style={{paddingTop: Metrics.ratio(5)}} source={leftIcon} />
         </TouchableOpacity>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{flexDirection: 'row'}}>
           <View>
-            <Image style={[{
-              height: Metrics.ratio(50),
-              width: Metrics.ratio(50),
-              position: "absolute",
-              left: Metrics.ratio(10)
-            }, Platform.OS === "ios" && {height: Metrics.ratio(35),left: Metrics.ratio(25),
-              width: Metrics.ratio(35),top:Metrics.ratio(17)}]} source={Images.LogoSmall} />
-            <Text style={[styles.headerText, headerTextStyle]}>{headerText}</Text>
+            <Image
+              style={[
+                {
+                  height: Metrics.ratio(50),
+                  width: Metrics.ratio(50),
+                  position: 'absolute',
+                  left: Metrics.ratio(10),
+                },
+                Platform.OS === 'ios' && {
+                  height: Metrics.ratio(35),
+                  left: Metrics.ratio(25),
+                  width: Metrics.ratio(35),
+                  top: Metrics.ratio(17),
+                },
+                headerIconStyle,
+              ]}
+              source={Images.LogoSmall}
+            />
+            <Text style={[styles.headerText, headerTextStyle]}>
+              {headerText}
+            </Text>
           </View>
         </View>
         <TouchableOpacity
           onPress={rightBtnPress}
-          style={[styles.TouchableMenu, rightIconStyle]}
-        >
+          style={[styles.TouchableMenu, rightIconStyle]}>
           {/* <Text style={styles.rightText}>SAVE</Text> */}
           {/* <Icon
             style={{ paddingTop: Metrics.ratio(5) }}

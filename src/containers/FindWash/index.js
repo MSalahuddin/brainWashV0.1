@@ -48,7 +48,7 @@ const workPlace = {
 const GooglePlacesInput = getlocation => {
   return (
     <GooglePlacesAutocomplete
-      placeholder="Search"
+      placeholder={getlocation.headerTxt}
       minLength={1} // minimum length of text to search
       autoFocus={false}
       returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
@@ -707,16 +707,16 @@ class FindWashScreen extends Component {
               this.state.pickup.longitude !== null && (
                 <MapView
                   // mapType={Platform.OS == "android" ? "none" : "standard"}
-                  onRegionChange={e => {
-                    this.setState({
-                      pickup: {
-                        latitude: e.latitude,
-                        longitude: e.longitude,
-                        latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,
-                      },
-                    });
-                  }}
+                  // onRegionChange={e => {
+                  //   this.setState({
+                  //     pickup: {
+                  //       latitude: e.latitude,
+                  //       longitude: e.longitude,
+                  //       latitudeDelta: 0.015,
+                  //       longitudeDelta: 0.0121,
+                  //     },
+                  //   });
+                  // }}
                   onPress={e => {
                     console.log(e.nativeEvent);
 
@@ -752,7 +752,10 @@ class FindWashScreen extends Component {
               )}
           </View>
 
-          <GooglePlacesInput getpicklatLng={this.getpicklatLng} />
+          <GooglePlacesInput
+            getpicklatLng={this.getpicklatLng}
+            headerTxt="Select Pick Up Location"
+          />
           {
             <TouchableOpacity
               onPress={() => {
@@ -832,16 +835,16 @@ class FindWashScreen extends Component {
             {this.state.dropoff && (
               <MapView
                 // mapType={Platform.OS == "android" ? "none" : "standard"}
-                onRegionChange={e => {
-                  this.setState({
-                    dropoff: {
-                      latitude: e.latitude,
-                      longitude: e.longitude,
-                      latitudeDelta: 0.015,
-                      longitudeDelta: 0.0121,
-                    },
-                  });
-                }}
+                // onRegionChange={e => {
+                //   this.setState({
+                //     dropoff: {
+                //       latitude: e.latitude,
+                //       longitude: e.longitude,
+                //       latitudeDelta: 0.015,
+                //       longitudeDelta: 0.0121,
+                //     },
+                //   });
+                // }}
                 onPress={e => {
                   console.log(e.nativeEvent);
 
@@ -876,7 +879,10 @@ class FindWashScreen extends Component {
             )}
           </View>
 
-          <GooglePlacesInput getpicklatLng={this.getdroplatLng} />
+          <GooglePlacesInput
+            getpicklatLng={this.getdroplatLng}
+            headerTxt="Select Drop Off Location"
+          />
           {this.state.dropoff && (
             <TouchableOpacity
               onPress={() => {
@@ -901,7 +907,7 @@ class FindWashScreen extends Component {
                   fontSize: Metrics.ratio(16),
                   fontFamily: Fonts.type.demibold,
                 }}>
-                Confirm DropOff
+                Confirm Drop Off
               </Text>
             </TouchableOpacity>
           )}
@@ -1020,6 +1026,8 @@ class FindWashScreen extends Component {
         <Header
           headerText={'FIND A WASH'}
           leftIcon={Images.LeftArrow}
+          headerIconStyle={{marginLeft: Metrics.ratio(40)}}
+          headerTextStyle={{marginLeft: Metrics.ratio(45)}}
           leftBtnPress={() => {
             if (this.state.showPickup) {
               this.pickupbackbutton();
