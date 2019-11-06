@@ -48,10 +48,19 @@ class WasherhistoryScreen extends Component {
     this.props.get_wash_history(data);
   };
   renderOrder = order => {
+    console.log(order, 'jjjjjjjjjjjjjjkkkkkkkkkkkkkkkkk');
     return (
       <View style={styles.statuscard}>
         <View style={styles.statusImg}>
-          <Image source={Images.profilePicture} style={styles.profileImg} />
+          {order &&
+            order.user &&
+            order.user.details &&
+            order.user.details.image_url && (
+              <Image
+                source={{uri: order.user.details.image_url}}
+                style={styles.profileImg}
+              />
+            )}
           <View style={styles.userDetail}>
             <Text style={styles.userName}>{order.user.name}</Text>
 

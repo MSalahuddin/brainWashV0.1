@@ -22,7 +22,6 @@ function* watchRequest() {
   while (a === 1) {
     a++;
     const {payload} = yield take(types.EDITPROFILE.REQUEST);
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaa', payload);
 
     try {
       const response = yield call(callRequest, payload);

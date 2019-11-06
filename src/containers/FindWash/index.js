@@ -240,9 +240,10 @@ class FindWashScreen extends Component {
     } else {
       type = 0;
     }
+    console.log(this.props.user);
     var data = {
-      user_id: this.props.user.id,
-      accessToken: this.props.user.access_token,
+      user_id: this.props.user.user.id,
+      accessToken: this.props.user.user.access_token,
       no_bags: this.state.Nofofbags,
       type: type,
       up_latitude: this.state.pickup.latitude,

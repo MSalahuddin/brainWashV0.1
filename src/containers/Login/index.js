@@ -28,8 +28,8 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'demo@demo.edu',
-      password: 'A1234567',
+      email: '',
+      password: '',
       isloading: false,
       showpassword: true,
       device_token: '',
@@ -39,10 +39,8 @@ class LoginScreen extends Component {
     };
   }
   componentDidMount() {
-    // console.log("asasaaaaaaaaaaaaaaaaaaaa",AsyncStorage.getItem("User"));
     this.setState({device_type: Platform.OS});
     this.getpermission();
-    // this.props.navigation.navigate('dashboard');
   }
   getpermission = () => {
     firebase
@@ -58,18 +56,11 @@ class LoginScreen extends Component {
   };
   gettoken = async () => {
     const fcmToken = await firebase.messaging().getToken();
-    console.log(fcmToken, 'fcmTokenfcmTokenfcmTokenfcmToken');
     if (fcmToken) {
       this.setState({device_token: fcmToken});
-      // console.log(this.state)
-
-      // user has a device token
-    } else {
-      // user doesn't have a device token yet
     }
   };
   _storeUserdata = async user => {
-    console.log('ye raha user', user.user);
     try {
       await AsyncStorage.setItem('@storage_Key', JSON.stringify(user));
       // this.props.updateUser(user)

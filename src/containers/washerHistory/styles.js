@@ -78,6 +78,7 @@ export default StyleSheet.create({
     width: Metrics.ratio(60),
     height: Metrics.ratio(60),
     // flex:1
+    borderRadius: 100,
   },
   userDetail: {
     position: 'absolute',
@@ -104,8 +105,8 @@ export default StyleSheet.create({
     position: 'absolute',
     right: Metrics.ratio(2),
     backgroundColor: '#ffc057',
-    width: Metrics.ratio(50),
-    height: Metrics.ratio(50),
+    width: Metrics.ratio(70),
+    height: Metrics.ratio(70),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
