@@ -247,9 +247,11 @@ class RegistrationScreen extends Component {
           email: email,
           password: password,
           role_id:'5',
+          dob:Dob,
           password_confirmation: confirmpassword,
           device_token: this.state.device_token,
-          device_type: this.state.device_type
+          device_type: this.state.device_type,
+          gender:gender
         }
         this.setState({isloading:true});
         this.props.register_request(data)
