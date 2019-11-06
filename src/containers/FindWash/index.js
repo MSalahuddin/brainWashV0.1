@@ -48,7 +48,7 @@ const workPlace = {
 const GooglePlacesInput = getlocation => {
   return (
     <GooglePlacesAutocomplete
-      placeholder="Search"
+      placeholder="Select Pick Up Location"
       minLength={1} // minimum length of text to search
       autoFocus={false}
       returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
@@ -140,8 +140,8 @@ class FindWashScreen extends Component {
       detergentErr: false,
       bagErr: false,
       pickup: {
-        latitude: null,
-        longitude: null,
+        latitude: 48.8496818,
+        longitude: 2.2940881,
         latitudeDelta: 0.015,
         longitudeDelta: 0.0121,
       },
@@ -151,8 +151,8 @@ class FindWashScreen extends Component {
       showForm: false,
       isCheckedExperience: false,
       dropoff: {
-        latitude: null,
-        longitude: null,
+        latitude: 48.8496818,
+        longitude: 2.2940881,
         latitudeDelta: 0.015,
         longitudeDelta: 0.0121,
       },
@@ -687,7 +687,7 @@ class FindWashScreen extends Component {
         <View
           style={{
             width: Metrics.screenWidth,
-            height: Metrics.screenHeight * 0.8,
+            height: Metrics.screenHeight * 0.9,
             // marginLeft: Metrics.screenWidth * 0.025,
             borderRadius: Metrics.ratio(10),
             marginTop: Metrics.ratio(10),
@@ -752,7 +752,7 @@ class FindWashScreen extends Component {
               )}
           </View>
 
-          <GooglePlacesInput getpicklatLng={this.getpicklatLng} />
+          <GooglePlacesInput getpicklatLng={this.getpicklatLng} isPickUp = {this.state.} />
           {
             <TouchableOpacity
               onPress={() => {
@@ -813,7 +813,7 @@ class FindWashScreen extends Component {
         <View
           style={{
             width: Metrics.screenWidth,
-            height: Metrics.screenHeight * 0.8,
+            height: Metrics.screenHeight * 0.9,
             //  marginLeft: Metrics.screenWidth * 0.025,
             borderRadius: Metrics.ratio(10),
             marginTop: Metrics.ratio(10),
