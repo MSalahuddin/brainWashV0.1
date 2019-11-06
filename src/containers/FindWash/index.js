@@ -357,7 +357,18 @@ class FindWashScreen extends Component {
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
           <RNPickerSelect
-            onValueChange={(value) => console.log(value,'valllllsjkdsahkdjh')}
+            onValueChange={(value) => {
+              console.log(value,'valllllsjkdsahkdjh')
+              var total = 10.99;
+              if (value == 1) {
+                total = total + 1;
+                this.setState({ Nofofbags: value, total: total });
+              } else if (value == 2) {
+                total = total + 7.99 + 1;
+                this.setState({ Nofofbags: value, total: total });
+              }
+              console.log(this.state.Nofofbags);
+          }}
             items={[
                 { label: "1" ,  value:"1" },
                 { label:"2", value:"2" },
