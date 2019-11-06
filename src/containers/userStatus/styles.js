@@ -72,6 +72,7 @@ bodyHeading:{
 profileImg:{
   width:Metrics.ratio(60),
   height:Metrics.ratio(60),
+  borderRadius:100,
   // flex:1
 
 },

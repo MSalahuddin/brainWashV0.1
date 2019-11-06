@@ -5,20 +5,43 @@ import { Text, View, StyleSheet, TextInput, Image } from "react-native";
 import styles from "./styles";
 import { Header } from "../../components";
 import { Fonts, Metrics, Images } from "../../theme";
-import DatePicker from "react-native-datepicker";
-
+import {Actions} from 'react-native-router-flux';
+import {request as get_wash_history} from '../../actions/WashHistoryAction';
+import moment from 'moment';
 class WashhistoryScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      employerName: "Milkshake Media",
-      location: "Atlanta, GA",
-      title: "UX Designer",
-      startDate: false
+      orders: null,
     };
   }
-  
-renderOrder = ()=>{
+
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.washHistory) {
+      if (
+        !nextProps.washHistory.failure &&
+        !nextProps.washHistory.isFetching &&
+        nextProps.washHistory.data.data &&
+        nextProps.washHistory.data.success === true
+      ) {
+        this.setState({orders: nextProps.washHistory.data.data});
+        this.setState({isloading: false});
+      }
+    }
+  }
+
+  componentWillMount() {
+    this.getData();
+  }
+
+  getData = () => {
+    const {user} = this.props;
+    const data = {access_token: user.user.access_token};
+    this.props.get_wash_history(data);
+  };
+renderOrder = order=>{
+  console.log(order)
   return(
     <View style={styles.statuscard}>
       <View style={styles.statusHead}>

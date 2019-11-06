@@ -10,10 +10,10 @@ import {ErrorHelper} from '../helpers';
 function callRequest(data) {
   return ApiSauce.get(Washhistory_Api, data);
 }
-let a = 1;
+// let a = 1;
 function* watchRequest() {
-  while (a === 1) {
-    a++;
+  while (true) {
+    // a=2;
     const {payload} = yield take(types.WASHHISTORY.REQUEST);
     // const { targetView } = payload;
     // delete payload.targetView;
