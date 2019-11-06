@@ -1,34 +1,34 @@
 // @flow
-import Immutable from "seamless-immutable";
-import * as types from "../actions/ActionTypes";
+import Immutable from 'seamless-immutable';
+import * as types from '../actions/ActionTypes';
 
 const initialState = Immutable({
   failure: false,
   isFetching: false,
-  errorMessage: "",
-  data: {}
+  errorMessage: '',
+  data: {},
 });
 
 export default (state: Object = initialState, action: Object) => {
   switch (action.type) {
     case types.EDITPROFILE.REQUEST:
       return Immutable.merge(state, {
-        isFetching: true
+        isFetching: true,
       });
     case types.EDITPROFILE.SUCCESS:
       return Immutable.merge(state, {
         failure: false,
         isFetching: false,
-        errorMessage: "",
-        data: action.data
+        errorMessage: '',
+        data: action.data,
       });
     case types.EDITPROFILE.FAILURE:
       return Immutable.merge(state, {
         failure: true,
         isFetching: false,
-        errorMessage: action.errorMessage
+        errorMessage: action.errorMessage,
       });
-  
+
     default:
       return state;
   }

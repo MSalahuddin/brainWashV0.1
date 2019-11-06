@@ -1,12 +1,14 @@
-import login from "./login";
-import register from "./register";
+import login from './login';
+import register from './register';
 import userReducer from './userReduces';
-import  orderreducer from './OrderReducer';
-import { combineReducers } from "redux";
+import orderreducer from './OrderReducer';
+import washHistory from './washhistoryreducer';
+import {combineReducers} from 'redux';
 
 export const rootReducer = combineReducers({
   login,
   register,
   userReducer,
-  orderreducer
+  orderreducer,
+  washHistory,
 });

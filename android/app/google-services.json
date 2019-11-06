@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "738004638475",
+    "firebase_url": "https://project-5d968.firebaseio.com",
+    "project_id": "project-5d968",
+    "storage_bucket": "project-5d968.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738004638475:android:ae1c2e1cca3fdfd059600e",
+        "android_client_info": {
+          "package_name": "com.brainwasher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738004638475-il188fp4i83dahrn9pu2em8ncao58qqf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqRWEDLVIPHcjQlAI2o8LA3enSXX_Mj48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738004638475-il188fp4i83dahrn9pu2em8ncao58qqf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

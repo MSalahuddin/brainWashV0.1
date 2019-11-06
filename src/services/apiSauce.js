@@ -1,37 +1,36 @@
 // import base64 from "base-64";
-import { create } from "apisauce";
-import qs from "qs";
-import { Alert } from "react-native";
+import {create} from 'apisauce';
+import qs from 'qs';
+import {Alert} from 'react-native';
 
 const api = create({
   headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json"
-  }
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
 });
 
 class ApiSauce {
   async post(url, payload, headers) {
     const Header = {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      }
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
     };
 
-    const response = await api.post(url, payload, { headers: Header });
-    console.log(response)
+    const response = await api.post(url, payload, {headers: Header});
+    console.log(response);
     return new Promise((resolve, reject) => {
       this.handlePromise(resolve, reject, response);
     });
   }
-  
 
   async postWithToken(url, payload, token, headers) {
     const Header = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     };
 
     const response = await api.post(url, payload, Header);
@@ -43,12 +42,12 @@ class ApiSauce {
   async put(url, data, headers) {
     const Header = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
-    }
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
     const response = await api.put(url, data, Header);
-    
+
     return new Promise((resolve, reject) => {
       this.handlePromise(resolve, reject, response);
     });
@@ -57,28 +56,24 @@ class ApiSauce {
 
   async get(url, data, headers) {
     const token = data && data.access_token && data.access_token;
-
+    console.log(token, 'hhhhhhhhhhhhhjjjjjjjjjjj');
     api.setHeaders({
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${token}`
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Bearer ${token}`,
     });
     const response = await api.get(url);
-
+    console.log(response, 'resjjjjjjjjjjjjjjkkkkkkkkkkkkkkbbbbb');
     return new Promise((resolve, reject) => {
       this.handlePromise(resolve, reject, response);
     });
   }
 
   handlePromise = (resolve, reject, response) => {
-    console.log(response, "kkkkkkkkkkkkkkk");
+    console.log(response, 'kkkkkkkkkkkkkkk');
     if (response.ok && response.data && response.originalError === null) {
       resolve(response.data);
     } else {
-      if (
-        response.originalError &&
-        !response.ok
-      
-      ) {
+      if (response.originalError && !response.ok) {
         reject(response.data.message);
       } else if (
         response.originalError &&
@@ -91,7 +86,7 @@ class ApiSauce {
       } else if (
         response.originalError &&
         !response.ok &&
-        response.problem === "NETWORK_ERROR"
+        response.problem === 'NETWORK_ERROR'
       ) {
         reject(response.problem);
       }
