@@ -28,8 +28,8 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'demo@demo.edu',
-      password: 'A1234567',
+      email: '',
+      password: '',
       isloading: false,
       showpassword: true,
       device_token: '',
@@ -99,7 +99,7 @@ class LoginScreen extends Component {
 
         // AsyncStorage.setItem('User', nextProps.login.data.data);
         // this.props.navigation.navigate("dashboard");
-      } else if (nextProps.login.failure && !nextProps.login.isFetching)  {
+      } else if(nextProps.login.failure && !nextProps.login.isFetching)  {
         this.setState({isloading: false});
       }
     }
@@ -140,7 +140,7 @@ class LoginScreen extends Component {
       //   console.log(emaila, emaildot, emailExtension);
       // }
       // else if (emailExtension) {
-      // this.setState({isloading: true});
+      this.setState({isloading: true});
       let payload = {email, password, device_token, device_type};
       this.props.login_request(payload);
 
