@@ -752,7 +752,7 @@ class FindWashScreen extends Component {
               )}
           </View>
 
-          <GooglePlacesInput getpicklatLng={this.getpicklatLng} isPickUp = {this.state.} />
+          <GooglePlacesInput getpicklatLng={this.getpicklatLng} />
           {
             <TouchableOpacity
               onPress={() => {
