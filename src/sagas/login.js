@@ -16,16 +16,16 @@ function* watchRequest() {
     // a++;
     const {payload} = yield take(types.LOGIN.REQUEST);
     console.log(payload, 'kkkkkkkkkkkkkkooooooooooooooooo');
-    // try {
-    //   const response = yield call(callRequest, payload);
+    try {
+      const response = yield call(callRequest, payload);
 
-    //   yield put(success(response));
+      yield put(success(response));
 
-    // } catch (err) {
-    //   console.log(err);
-    //   yield put(failure(err));
-    //   ErrorHelper.handleErrors(err, true);
-    // }
+    } catch (err) {
+      console.log(err);
+      yield put(failure(err));
+      ErrorHelper.handleErrors(err, true);
+    }
   }
 }
 
