@@ -28,8 +28,8 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: 'demo@demo.edu',
+      password: 'A1234567',
       isloading: false,
       showpassword: true,
       device_token: '',
@@ -39,8 +39,14 @@ class LoginScreen extends Component {
     };
   }
   componentDidMount() {
+    
     this.setState({device_type: Platform.OS});
-    this.getpermission();
+    // this.getpermission();
+    this.gettoken()
+  }
+  tok = async () => {
+    const fcmToken = await firebase.messaging().getToken();
+    console.log(fcmToken,'fjjjjjnknklajskdjkl')
   }
   getpermission = () => {
     firebase
@@ -56,6 +62,7 @@ class LoginScreen extends Component {
   };
   gettoken = async () => {
     const fcmToken = await firebase.messaging().getToken();
+    console.log(fcmToken,'fjjjjjnknklajskdjkl')
     if (fcmToken) {
       this.setState({device_token: fcmToken});
     }
@@ -91,11 +98,8 @@ class LoginScreen extends Component {
         this.setState({isloading: false});
 
         this._storeUserdata(nextProps.login.data.data);
-        // setInterval(() => {
         this.getData();
         this.props.updateUser(nextProps.login.data.data);
-        console.log('=========> store', configureStore().getState());
-        // }, 3000);
 
         // AsyncStorage.setItem('User', nextProps.login.data.data);
         // this.props.navigation.navigate("dashboard");
