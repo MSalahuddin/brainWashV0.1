@@ -31,8 +31,10 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { updateUser, removeUser } from '../../actions/userAction';
 import configureStore from '../../store';
-import { request as order_request } from '../../actions/OrderAction';
-import { exportDefaultSpecifier } from '@babel/types';
+import {request as order_request} from '../../actions/OrderAction';
+import RNPickerSelect from 'react-native-picker-select';
+// import { request as order_request } from '../../actions/OrderAction';
+// import { exportDefaultSpecifier } from '@babel/types';
 
 const homePlace = {
   description: 'Home',
@@ -159,7 +161,7 @@ class FindWashScreen extends Component {
   componentDidMount() {
     console.log('add event listner');
     // geoloca
-    Geolocation.setRNConfiguration();
+    Platform.OS !== 'ios' && Geolocation.setRNConfiguration();
     // navigator.geolocation = require('@react-native-community/geolocation');
     Platform.OS === 'ios' &&
       Geolocation.setRNConfiguration({
@@ -354,7 +356,19 @@ class FindWashScreen extends Component {
             ]}
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
-          <Picker
+          <RNPickerSelect
+            onValueChange={(value) => console.log(value,'valllllsjkdsahkdjh')}
+            items={[
+                { label: "1" ,  value:"1" },
+                { label:"2", value:"2" },
+            ]}
+            placeholder={{
+              label: 'Select No. Of Bags',
+              value: null,
+            }}
+            style={{placeholder: {fontSize: Metrics.ratio(16), color: 'black',  fontFamily: Fonts.type.regular, marginTop:Metrics.ratio(15)},inputIOS: { marginTop:Metrics.ratio(15), fontFamily: Fonts.type.regular,fontSize: Metrics.ratio(16), color: 'black'}, viewContainer : {height: 50, width: Metrics.screenWidth *0.8,  paddingLeft: Metrics.ratio(15)}}}
+        />
+          {/* <Picker
             selectedValue={this.state.Nofofbags}
             style={{ height: 50, width: 100 }}
             onValueChange={(itemValue, itemIndex) => {
@@ -370,7 +384,7 @@ class FindWashScreen extends Component {
             }}>
             <Picker.Item label="1" value="1" />
             <Picker.Item label="2" value="2" />
-          </Picker>
+          </Picker> */}
         </View>
         {Iserr && (
           <View>
@@ -380,6 +394,7 @@ class FindWashScreen extends Component {
       </View>
     );
   };
+
   renderInputfield = (
     headerText,
     placeholder,
@@ -438,7 +453,7 @@ class FindWashScreen extends Component {
       </View>
     );
   };
-  // text Area
+
   renderInputArea = (
     headerText,
     placeholder,
