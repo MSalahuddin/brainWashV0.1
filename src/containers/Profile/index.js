@@ -36,7 +36,7 @@ class ProfileScreeen extends Component {
       bio: '',
       graduation: null,
       // profile_pic:'',
-      profileImg: '',
+      profileImg: null,
       showUpdateProfile: false,
     };
   }
@@ -62,8 +62,13 @@ class ProfileScreeen extends Component {
     };
     if (get == 0) {
       ImagePicker.launchCamera(options, response => {
-        console.log(options, 'oooooooooooooooooo');
-        console.log(response, 'reeeeeeeeeeeeeeeeeeeee');
+        let ImageObj = {
+          uri: response.uri,
+          type: response.type,
+          name: response.fileName,
+        };
+        console.log(response, 'kkkkkkjjjjjjjjjjjjjjjj');
+        this.setState({profileImg: ImageObj});
         // Same code as in above section!
       });
     }
@@ -85,7 +90,7 @@ class ProfileScreeen extends Component {
 
   save = () => {
     const {user, userDetails} = this.state;
-    // console.log(userDetails)
+    console.log(userDetails);
     var bio;
     var graduation;
     var image;
@@ -100,8 +105,8 @@ class ProfileScreeen extends Component {
     } else {
       graduation = this.state.graduation;
     }
-    if (this.state.profileImg == '') {
-      image = userDetails.image_url;
+    if (this.state.profileImg == null) {
+      image = null;
     } else {
       image = this.state.profileImg;
     }
@@ -117,6 +122,7 @@ class ProfileScreeen extends Component {
       image: image,
       name: name,
     };
+    console.log(payload, 'payyyyyyyyyyyyyyy');
     var token = user.access_token;
     console.log(token);
     var datawithtoken = {token: token, payload: payload};
@@ -334,27 +340,27 @@ class ProfileScreeen extends Component {
     );
   };
   renderUpdateProfile = () => {
-    const {user, userDetails} = this.state;
-    console.log(userDetails.image_url, 'kkkkkkkkkkkkkkjjjjjjjjjjjjjj');
+    const {user, userDetails, profileImg} = this.state;
+
     return (
       <View>
         <View style={styles.Profilecard}>
           <View>
             <View style={styles.ProfileImgContainer}>
-              <Image source={userDetails.image_url} style={styles.profileImg} />
+              {profileImg ? (
+                <Image
+                  source={{uri: profileImg.uri}}
+                  style={styles.profileImg}
+                />
+              ) : (
+                <Image
+                  source={{uri: userDetails.image_url}}
+                  style={styles.profileImg}
+                />
+              )}
               <TouchableOpacity
                 onPress={() => {
                   this.openCamera(0);
-                  // CameraRoll.getPhotos({
-                  //   first: 20,
-                  //   assetType: 'Photos',
-                  // })
-                  //   .then(r => {
-                  //     this.setState({profileImg: r.edges});
-                  //   })
-                  //   .catch(err => {
-                  //     //Error Loading Images
-                  //   });
                 }}
                 style={{
                   position: 'absolute',
@@ -453,15 +459,17 @@ class ProfileScreeen extends Component {
   };
   renderProfile = () => {
     const {user, userDetails} = this.state;
-    console.log(user, 'uuuuuuuuuuuuuuuuuuuuuuuuuu');
-    console.log(userDetails, '/////////////////////');
+
     // console.log(userDetails)
     return (
       <View>
         <View style={styles.Profilecard}>
           <View style={styles.ProfileImgContainer}>
             {userDetails && userDetails.image_url && (
-              <Image source={userDetails.image_url} style={styles.profileImg} />
+              <Image
+                source={{uri: userDetails.image_url}}
+                style={styles.profileImg}
+              />
             )}
           </View>
           <View style={styles.UserName}>

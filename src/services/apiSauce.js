@@ -39,6 +39,23 @@ class ApiSauce {
       this.handlePromise(resolve, reject, response);
     });
   }
+
+  async postWithTokenMultipart(url, payload, token, headers) {
+    const Header = {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await api.post(url, payload, Header);
+
+    return new Promise((resolve, reject) => {
+      this.handlePromise(resolve, reject, response);
+    });
+  }
+
   async put(url, data, headers) {
     const Header = {
       headers: {

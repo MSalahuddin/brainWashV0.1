@@ -6,7 +6,7 @@ export const baseUrl = 'http://brain.masology.net/api/v1/';
 export const order_request = `${baseUrl}orders`;
 export const login_Api = `${baseUrl}login`;
 export const register_Api = `${baseUrl}register`;
-export const Editprofile_Api = `${baseUrl}users`;
+export const Editprofile_Api = `${baseUrl}userupdate`;
 export const Laundrystatus_Api = `${baseUrl}register`;
 export const Washhistory_Api = `${baseUrl}orders`;
 export const forget_password = `${baseUrl}forget-password?email=`;
