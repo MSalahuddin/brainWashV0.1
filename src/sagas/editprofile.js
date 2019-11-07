@@ -17,13 +17,13 @@ function callRequest(data) {
   setData.append('name', data.payload.name);
   return ApiSauce.postWithTokenMultipart(Editprofile_Api, setData, data.token);
 }
-let a = 1;
+// let a = 1;
 function* watchRequest() {
   while (true) {
     const {payload} = yield take(types.EDITPROFILE.REQUEST);
     try {
       const response = yield call(callRequest, payload);
-
+      // console.log(response);
       yield put(success(response));
       // setTimeout(() => {
       //   Actions.verify({

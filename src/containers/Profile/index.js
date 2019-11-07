@@ -31,7 +31,7 @@ class ProfileScreeen extends Component {
       user: null,
       userDetails: null,
       showProfile: true,
-      dob: '',
+      dob: null,
       name: '',
       bio: '',
       graduation: null,
@@ -40,6 +40,7 @@ class ProfileScreeen extends Component {
       showUpdateProfile: false,
       isloading: false,
       access_token: null,
+      dobErr: false,
     };
   }
 
@@ -55,6 +56,7 @@ class ProfileScreeen extends Component {
       user: this.props.user.user,
       userDetails: this.props.user.user.details,
       access_token: this.props.user.user.access_token,
+      dob: this.props.user.user.details.dob,
     });
   }
   componentWillReceiveProps(nextProps) {
@@ -73,10 +75,15 @@ class ProfileScreeen extends Component {
         );
         let access_token = this.state.access_token;
         let obj = {access_token};
+        console.log(obj);
         let user = nextProps.editProfile.data.data;
         user = {...user, ...obj};
-        nextProps.editProfile.data.data.access_token = this.state.access_token;
-        console.log(user, 'kkkkkkkkkkkjjjjjjjjjnnnnnnnnn');
+        // nextProps.editProfile.data.data.access_token = this.state.access_token;
+        console.log(
+          user,
+          nextProps.editProfile.data.data,
+          'kkkkkkkkkkkjjjjjjjjjnnnnnnnnn',
+        );
         this._storeUserdata({user: user});
         // this.getData();
         this.props.updateUser({user: user});
@@ -122,7 +129,7 @@ class ProfileScreeen extends Component {
     this.setState({name: e});
   };
   onchangeDob = e => {
-    this.setState({Dob: e});
+    this.setState({dob: e});
   };
   onchangeBio = e => {
     this.setState({bio: e});
@@ -133,12 +140,17 @@ class ProfileScreeen extends Component {
   };
 
   save = () => {
-    const {user, userDetails} = this.state;
+    const {user, userDetails, dob} = this.state;
     console.log(userDetails);
     var bio;
     var graduation;
     var image;
     var name;
+    var birthDate;
+    var age;
+    var today = new Date();
+    console.log('dob', dob);
+    // console.log(doob);
     if (this.state.bio == '' || this.state.bio == ' ') {
       bio = this.state.userDetails.bio;
     } else {
@@ -159,18 +171,33 @@ class ProfileScreeen extends Component {
     } else {
       name = this.state.name;
     }
-    var payload = {
-      id: this.state.user.id,
-      bio: bio,
-      graduation: graduation,
-      image: image,
-      name: name,
-    };
-    console.log(payload, 'payyyyyyyyyyyyyyy');
-    var token = user.access_token;
-    console.log(token);
-    var datawithtoken = {token: token, payload: payload};
-    this.props.Edit_profile(datawithtoken);
+    if (dob !== null) {
+      console.log(dob);
+      birthDate = new Date(dob);
+      age = today.getFullYear() - birthDate.getFullYear();
+      if (age < 18) {
+        this.setState({dobErr: true});
+        setTimeout(() => {
+          this.setState({dobErr: false});
+        }, 3000);
+      } else {
+        // console('asasasasasass');
+        var payload = {
+          id: this.state.user.id,
+          bio: bio,
+          graduation: graduation,
+          image: image,
+          name: name,
+          dob: dob,
+        };
+        console.log(payload, 'payyyyyyyyyyyyyyy');
+        var token = user.access_token;
+        console.log(token);
+        var datawithtoken = {token: token, payload: payload};
+        this.props.Edit_profile(datawithtoken);
+        console.log(datawithtoken);
+      }
+    }
     // this.props.navigation.navigate('dashborad')
   };
   renderInputfield = (
@@ -428,7 +455,7 @@ class ProfileScreeen extends Component {
               this.onchangeName,
               // Images.emailIcon
             )}
-         
+
             {this.renderNumberInputfield(
               'GRADUATION YEAR',
               userDetails.graduation,
@@ -451,8 +478,12 @@ class ProfileScreeen extends Component {
                   }}>
                   DATE OF BIRTH
                 </Text>
-                {this.renderStartDatepicker(userDetails.dob)}
-                {/* {this.state.error.dobErr && <View><Text style={{ color: 'red' }} >*You are not allowed to register without valid date of birth</Text></View>} */}
+                {this.renderStartDatepicker(this.state.dob)}
+                {this.state.dobErr && (
+                  <View>
+                    <Text style={{color: 'red'}}>*You age must be 18+</Text>
+                  </View>
+                )}
               </View>
             </View>
             {this.renderInputArea(
@@ -467,11 +498,12 @@ class ProfileScreeen extends Component {
           <View
             style={{
               width: Metrics.screenWidth,
-              
-              flexDirection: 'row'
+
+              flexDirection: 'row',
             }}>
             <TouchableOpacity
-              style={{width: Metrics.screenWidth * 0.4,
+              style={{
+                width: Metrics.screenWidth * 0.4,
                 height: Metrics.ratio(45),
                 marginLeft: Metrics.screenWidth * 0.05,
                 marginTop: Metrics.ratio(20),
@@ -487,7 +519,8 @@ class ProfileScreeen extends Component {
                   height: 1,
                 },
                 shadowOpacity: 0.18,
-                shadowRadius: 1.0}}
+                shadowRadius: 1.0,
+              }}
               onPress={() => {
                 this.save();
               }}>
@@ -501,7 +534,8 @@ class ProfileScreeen extends Component {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{width: Metrics.screenWidth * 0.4,
+              style={{
+                width: Metrics.screenWidth * 0.4,
                 height: Metrics.ratio(45),
                 marginLeft: Metrics.screenWidth * 0.05,
                 marginTop: Metrics.ratio(20),
@@ -517,7 +551,8 @@ class ProfileScreeen extends Component {
                   height: 1,
                 },
                 shadowOpacity: 0.18,
-                shadowRadius: 1.0}}
+                shadowRadius: 1.0,
+              }}
               onPress={() => {
                 this.setState({showProfile: true, showUpdateProfile: false});
               }}>
@@ -537,8 +572,8 @@ class ProfileScreeen extends Component {
   };
   renderProfile = () => {
     const {user, userDetails} = this.state;
-    console.log(user,'iiiiiiiiiiiiiiooooo')
-    console.log(userDetails,'userDetailsuserDetailsuserDetailsuserDetails')
+    console.log(user, 'iiiiiiiiiiiiiiooooo');
+    console.log(userDetails, 'userDetailsuserDetailsuserDetailsuserDetails');
     // console.log(userDetails)
     return (
       <View>
@@ -604,16 +639,12 @@ class ProfileScreeen extends Component {
             </View>
           </View>
           <View style={styles.BioBody}>
-           
-              <Text style={styles.bodyHeading}>Bio:</Text>
-              {/* {!userDetails.bio && <Text style={styles.TxtBio}></Text>} */}
-              
-       {userDetails && userDetails.bio && (
-                <Text style={styles.TxtBio}>{userDetails.bio}</Text>
-              )}
-   
-             
-            
+            <Text style={styles.bodyHeading}>Bio:</Text>
+            {/* {!userDetails.bio && <Text style={styles.TxtBio}></Text>} */}
+
+            {userDetails && userDetails.bio && (
+              <Text style={styles.TxtBio}>{userDetails.bio}</Text>
+            )}
           </View>
           <View
             style={{

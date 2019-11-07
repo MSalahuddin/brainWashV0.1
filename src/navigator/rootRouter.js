@@ -29,7 +29,7 @@ class RootRouter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: configureStore().getState().userReducer.user,
+      user: this.props.user,
     };
   }
 
@@ -45,6 +45,7 @@ class RootRouter extends Component {
     }
   };
   componentDidMount() {
+    console.log(this.props.user, '/////////////////,,,,,,,,,');
     this.getData();
   }
   componentWillReceiveProps(nextprops) {

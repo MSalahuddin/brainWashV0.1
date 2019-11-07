@@ -12,3 +12,4 @@ export const Washhistory_Api = `${baseUrl}orders`;
 export const forget_password = `${baseUrl}forget-password?email=`;
 export const verify_reset_code = `${baseUrl}verify-reset-code?verification_code=`;
 export const reset_password = `${baseUrl}reset-password`;
+export const get_universities = `${baseUrl}universities`;

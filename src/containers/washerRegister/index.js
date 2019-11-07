@@ -1,6 +1,8 @@
 // @flow
+// @flow
 import { connect } from "react-redux";
 import React, { Component } from "react";
+
 import moment from "moment";
 import {
   Text,
@@ -19,24 +21,27 @@ import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button';
 import DatePicker from "react-native-datepicker";
 import styles from "./styles";
 import Icon from "react-native-vector-icons/FontAwesome";
-// import firebase from 'react-native-firebase'
 import { Images, Metrics, Colors, Fonts } from "../../theme";
 import { request as register_request } from '../../actions/RegisterAction';
-import SpinnerLoader from '../../components/spinner';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import SpinnerLoader from '../../components/spinner';
+import { Getuniversity } from '../../config/simpleApiCall';
+
 class RegistrationwasherScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       startDate: false,
-      isloading:false,
+      isloading: false,
       f_name: '',
       l_name: '',
       email: '',
       password: '',
+      universities: [],
       confirmpassword: '',
       Dob: null,
-      role: 'washer',
+      role: '5',
+      name: null,
       gender: '',
       mobile: null,
       university: '',
@@ -44,12 +49,12 @@ class RegistrationwasherScreen extends Component {
       device_type: '',
       Extension: '',
       extensionErr: false,
-      uniData : [
-        {name: "University 1"},
-        {name: "University 2"}
+      uniData: [
+        { name: "University 1" },
+        { name: "University 2" }
       ],
       onAddUni: false,
-        selectedUni: null,
+      selectedUni: null,
       error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false },
     };
   }
@@ -57,12 +62,19 @@ class RegistrationwasherScreen extends Component {
   componentDidMount() {
     //  console.log(Platform);
     this.setState({ device_type: Platform.OS });
+    Getuniversity().then(response => {
+      console.log(response)
+      if (response.status === 200 && response.data && response.data.success == true && response.data.data) {
+        console.log(response.data.data)
+        this.setState({ universities: response.data.data })
+      }
+    })
     // this.getpermission();
   }
   componentWillReceiveProps(nextProps) {
     // console.log(nextProps);
     if (nextProps.register) {
-      this.setState({isloading:false})
+      this.setState({ isloading: false })
       if (
         !nextProps.register.failure &&
         !nextProps.register.isFetching &&
@@ -70,10 +82,10 @@ class RegistrationwasherScreen extends Component {
         nextProps.register.data.data.user.access_token
       ) {
         console.log("hello")
-         Alert.alert('SUCCESSFUL', 'You have been Registered successfully', [
+        Alert.alert('SUCCESSFUL', 'You have been Registered successfully', [
 
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ]);
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
         this.props.navigation.pop();
       }
     }
@@ -120,7 +132,7 @@ class RegistrationwasherScreen extends Component {
   };
 
   onSubmitHandle = () => {
-    const { name, email, password, confirmpassword, Extension, university, role, gender, Dob, mobile } = this.state;
+    const { selectedUni, name, email, password, confirmpassword, Extension, university, role, gender, Dob, mobile } = this.state;
     var dotIndex = email.lastIndexOf('.')
     var emailIndex = email.length;
     var today = new Date();
@@ -128,7 +140,7 @@ class RegistrationwasherScreen extends Component {
     var age = today.getFullYear() - birthDate.getFullYear();
     console.log(email.slice(dotIndex, emailIndex))
     this.setState({ Extension: email.slice(dotIndex, emailIndex) })
-    if (name == "" || name == " " || name.length < 3) {
+    if (name === null || name == " " || name.length < 3) {
       this.setState({
         error: { nameErr: true, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
       });
@@ -160,7 +172,7 @@ class RegistrationwasherScreen extends Component {
           this.setState({
             error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
           });
-        }, 3000); 
+        }, 3000);
       }
       else if (Extension !== ".edu") {
         this.setState({ extensionErr: true })
@@ -188,7 +200,7 @@ class RegistrationwasherScreen extends Component {
           });
         }, 3000);
       }
-  
+
       else if (!password.match('^(?=.*?[A-Z]).{8,}$')) {
         this.setState({
           error: { nameErr: false, emailErr: false, passwordErr: true, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
@@ -209,7 +221,7 @@ class RegistrationwasherScreen extends Component {
           });
         }, 3000);
       }
-      else if (university == "" || university == " ") {
+      else if (selectedUni === null) {
         this.setState({
           error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: true }
         });
@@ -240,28 +252,32 @@ class RegistrationwasherScreen extends Component {
         }, 3000);
       }
       else {
+        console.log(selectedUni, 'esllllllllllllllllll')
         name, email, password, confirmpassword, university, role, gender, Dob, mobile
         var data = {
           name: name,
           phone: mobile,
           email: email,
           password: password,
-          role_id:'4',
+          role_id: '5',
+          dob: Dob,
           password_confirmation: confirmpassword,
           device_token: this.state.device_token,
-          device_type: this.state.device_type
+          device_type: this.state.device_type,
+          gender: gender,
+          university_id: selectedUni.id
         }
-        this.setState({isloading:true});
+        this.setState({ isloading: true });
         this.props.register_request(data)
         console.log(data)
         // Alert.alert('SUCCESSFUL', 'You have been Registered successfully', [
-  
+
         //   { text: 'OK', onPress: () => console.log('OK Pressed') },
         // ]);
         // this.props.navigation.navigate.pop();
       }
     }
-    
+
   };
   renderStartDatepicker = () => {
 
@@ -331,39 +347,39 @@ class RegistrationwasherScreen extends Component {
   };
 
   selectDropdownItem = (el) => {
-    this.setState({selectedUni: el});
-    this.setState({university:el,onAddUni:false})
+    console.log(el)
+    this.setState({ selectedUni: el, onAddUni: false });
   }
 
   renderDropdownList = (data) => {
     return (
       <View>
         {data.map((el, index) => {
-            return (
-              <TouchableOpacity
+          return (
+            <TouchableOpacity
+              style={{
+                //backgroundColor: "red",
+                flex: 1,
+                height: Metrics.ratio(40)
+              }}
+              onPress={() => {
+                this.selectDropdownItem(el);
+              }}
+            >
+              <Text
                 style={{
-                  //backgroundColor: "red",
-                  flex: 1,
-                  height: Metrics.ratio(40)
-                }}
-                onPress={() => {
-                  this.selectDropdownItem(el);
+                  fontSize: 16,
+                  marginVertical: Metrics.screenHeight * 0.01,
+                  marginLeft: Metrics.screenWidth * 0.02,
+                  borderBottomColor: '#b4b4b4',
+                  borderBottomWidth: StyleSheet.hairlineWidth
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 16,
-                    marginVertical: Metrics.screenHeight * 0.01,
-                    marginLeft: Metrics.screenWidth * 0.02,
-                    borderBottomColor:'#b4b4b4',
-                    borderBottomWidth: StyleSheet.hairlineWidth
-                  }}
-                >
-                  {el.name}
-                </Text>
-              </TouchableOpacity>
-            );
-          
+                {el.name}
+              </Text>
+            </TouchableOpacity>
+          );
+
         })}
       </View>
     );
@@ -395,45 +411,49 @@ class RegistrationwasherScreen extends Component {
   };
 
   renderDropdownContainer = (headerText, placeholder, errTxt, isErr, image) => {
-    const { onAddUni, specificAgencyWorker, selectedUni, uniData} = this.state;
+    const { onAddUni, specificAgencyWorker, selectedUni, universities } = this.state;
     return (
       <View >
-        <TouchableOpacity   onPress={() => this.setState({ onAddUni: true})}
-        style = {{width: Metrics.screenWidth * 0.9,
-                  marginHorizontal: Metrics.screenWidth * 0.025}}>
-          <Text style={{color: "black",
-                          fontSize: Metrics.ratio(14),
-                          fontFamily: Fonts.type.demibold}}>{headerText}</Text>
-        <View
-          style={[{
-            flexDirection: "row",
-            alignItems: "center",
-            paddingLeft: Metrics.ratio(5),
+        <TouchableOpacity onPress={() => this.setState({ onAddUni: true })}
+          style={{
             width: Metrics.screenWidth * 0.9,
-            borderBottomWidth: StyleSheet.hairlineWidth,
-            borderBottomColor: "#b4b4b4",
-            marginBottom: Metrics.ratio(10)
-          },Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
-        >
-            <Image
-            source={image}
+            marginHorizontal: Metrics.screenWidth * 0.025
+          }}>
+          <Text style={{
+            color: "black",
+            fontSize: Metrics.ratio(14),
+            fontFamily: Fonts.type.demibold
+          }}>{headerText}</Text>
+          <View
             style={[{
-              width: Metrics.ratio(20),
-              height: Metrics.ratio(20),
-              marginTop: Metrics.ratio(6)
-            },Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
-          />
-          <Text
-           style={{
-             fontSize: Metrics.ratio(16),
-             color: "#b4b4b4"
-           }}
-         >
-           {selectedUni
-             ? selectedUni.name
-             : "University Attending"}
-         </Text>
-        </View>
+              flexDirection: "row",
+              alignItems: "center",
+              paddingLeft: Metrics.ratio(5),
+              width: Metrics.screenWidth * 0.9,
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              borderBottomColor: "#b4b4b4",
+              marginBottom: Metrics.ratio(10)
+            }, Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
+          >
+            <Image
+              source={image}
+              style={[{
+                width: Metrics.ratio(20),
+                height: Metrics.ratio(20),
+                marginTop: Metrics.ratio(6)
+              }, Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
+            />
+            <Text
+              style={{
+                fontSize: Metrics.ratio(16),
+                color: "#b4b4b4"
+              }}
+            >
+              {selectedUni
+                ? selectedUni.name
+                : "University Attending"}
+            </Text>
+          </View>
           {/* <TouchableOpacity
             style={{
               width: Metrics.ratio(44),
@@ -452,9 +472,9 @@ class RegistrationwasherScreen extends Component {
           </TouchableOpacity> */}
         </TouchableOpacity>
         {onAddUni &&
-          uniData.length !== 0 &&
-          this.renderDropdown(uniData)}
-          {isErr && <View><Text style={{ color: 'red' }} >**{errTxt}</Text></View>}
+          universities.length !== 0 &&
+          this.renderDropdown(universities)}
+        {isErr && <View><Text style={{ color: 'red' }} >**{errTxt}</Text></View>}
       </View>
     );
   };
@@ -473,7 +493,7 @@ class RegistrationwasherScreen extends Component {
             borderBottomWidth: StyleSheet.hairlineWidth,
             borderBottomColor: "#b4b4b4",
             marginBottom: Metrics.ratio(10)
-          },Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
+          }, Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
         >
           <Image
             source={image}
@@ -481,7 +501,7 @@ class RegistrationwasherScreen extends Component {
               width: Metrics.ratio(20),
               height: Metrics.ratio(20),
               marginTop: Metrics.ratio(6)
-            },Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
+            }, Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
           {rightIcon && <TextInput
@@ -524,7 +544,7 @@ class RegistrationwasherScreen extends Component {
             borderBottomWidth: StyleSheet.hairlineWidth,
             borderBottomColor: "#b4b4b4",
             marginBottom: Metrics.ratio(10)
-          },Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
+          }, Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
         >
           <Image
             source={image}
@@ -532,7 +552,9 @@ class RegistrationwasherScreen extends Component {
               width: Metrics.ratio(20),
               height: Metrics.ratio(20),
               marginTop: Metrics.ratio(6)
-            },Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
+            }, Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
+            resizeMethod='auto'
+            resizeMode='cover'
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
           {rightIcon && <TextInput
@@ -574,7 +596,7 @@ class RegistrationwasherScreen extends Component {
             borderBottomWidth: StyleSheet.hairlineWidth,
             borderBottomColor: "#b4b4b4",
             marginBottom: Metrics.ratio(10)
-          },Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
+          }, Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
         >
           <Image
             source={image}
@@ -582,7 +604,7 @@ class RegistrationwasherScreen extends Component {
               width: Metrics.ratio(20),
               height: Metrics.ratio(20),
               marginTop: Metrics.ratio(6)
-            },Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
+            }, Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
           <TextInput
@@ -653,18 +675,18 @@ class RegistrationwasherScreen extends Component {
         <KeyboardAwareScrollView>
 
           <View style={[styles.bodyView, Platform.OS === "ios" && { marginTop: Metrics.ratio(30) }]}>
-          <View style = {{width: Metrics.screenWidth * 0.95, justifyContent: 'center', alignItems: 'center'}}>
-         <Image
-                  source={Images.logo}
-                  style={{
-                    width: Metrics.ratio(175),
-                    height: Metrics.ratio(56),
-                    marginBottom: Metrics.ratio(15)
-                  }}
-                 resizeMethod = 'auto'
-                 resizeMode = 'cover'
-                />
-         </View>
+            <View style={{ width: Metrics.screenWidth * 0.95, justifyContent: 'center', alignItems: 'center' }}>
+              <Image
+                source={Images.logo}
+                style={{
+                  width: Metrics.ratio(175),
+                  height: Metrics.ratio(56),
+                  marginBottom: Metrics.ratio(15)
+                }}
+                resizeMethod='auto'
+                resizeMode='cover'
+              />
+            </View>
             <View style={styles.headerView}>
 
               <Text style={styles.headerText}>SIGN UP</Text>
@@ -758,7 +780,7 @@ class RegistrationwasherScreen extends Component {
               this.onchangeUniversity,
               Images.Scholar
             )} */}
-            {this.renderDropdownContainer( 
+            {this.renderDropdownContainer(
               "UNIVERSITY ATTENDING",
               "University Attending",
               "Enter University Name",
@@ -830,7 +852,7 @@ class RegistrationwasherScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>
-          </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
         {/* </ScrollView> */}
         {/* </View> */}
         {this.renderOverlaySpinner()}
@@ -849,3 +871,4 @@ export default connect(
   mapStateToProps,
   actions
 )(RegistrationwasherScreen);
+

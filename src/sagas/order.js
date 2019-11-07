@@ -32,10 +32,10 @@ function callRequest(data) {
 // ​function callRequest(data) {
 //   return ApiSauce.post(order_request,data);
 // }
-let a = 1;
+// let a = 1;
 function* watchRequest() {
-  while (a == 1) {
-    a++;
+  while (true) {
+    // a++;
     const {payload} = yield take(types.ORDER.REQUEST);
     console.log(payload, 'sssssssvvvvvvvsssssskkkkkkkkkkkkk');
     try {

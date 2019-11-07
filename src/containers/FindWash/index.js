@@ -685,7 +685,6 @@ class FindWashScreen extends Component {
   };
 
   renderPickup = () => {
-    console.log('pickup', this.state.pickup);
     return (
       <View
         style={{
@@ -694,16 +693,19 @@ class FindWashScreen extends Component {
           elevation: 8,
         }}>
         <View
-          style={{
-            width: Metrics.screenWidth,
-            height: Metrics.screenHeight * 0.9,
-            // marginLeft: Metrics.screenWidth * 0.025,
-            borderRadius: Metrics.ratio(10),
-            marginTop: Metrics.ratio(10),
-            marginBottom: Metrics.ratio(10),
-            backgroundColor: 'white',
-            elevation: 8,
-          }}>
+          style={[
+            {
+              width: Metrics.screenWidth,
+              height: Metrics.screenHeight * 0.9,
+              // marginLeft: Metrics.screenWidth * 0.025,
+              borderRadius: Metrics.ratio(10),
+              marginTop: Metrics.ratio(10),
+              marginBottom: Metrics.ratio(10),
+              backgroundColor: 'white',
+              elevation: 8,
+            },
+            Platform.OS === 'android' && {height: Metrics.screenHeight * 0.85},
+          ]}>
           <View
             style={{
               ...StyleSheet.absoluteFillObject,
@@ -823,16 +825,19 @@ class FindWashScreen extends Component {
           elevation: 8,
         }}>
         <View
-          style={{
-            width: Metrics.screenWidth,
-            height: Metrics.screenHeight * 0.9,
-            //  marginLeft: Metrics.screenWidth * 0.025,
-            borderRadius: Metrics.ratio(10),
-            marginTop: Metrics.ratio(10),
-            marginBottom: Metrics.ratio(10),
-            backgroundColor: 'white',
-            elevation: 8,
-          }}>
+          style={[
+            {
+              width: Metrics.screenWidth,
+              height: Metrics.screenHeight * 0.9,
+              //  marginLeft: Metrics.screenWidth * 0.025,
+              borderRadius: Metrics.ratio(10),
+              marginTop: Metrics.ratio(10),
+              marginBottom: Metrics.ratio(10),
+              backgroundColor: 'white',
+              elevation: 8,
+            },
+            Platform.OS === 'android' && {height: Metrics.screenHeight * 0.85},
+          ]}>
           <View
             style={{
               ...StyleSheet.absoluteFillObject,

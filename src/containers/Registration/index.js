@@ -24,6 +24,8 @@ import { Images, Metrics, Colors, Fonts } from "../../theme";
 import { request as register_request } from '../../actions/RegisterAction';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import SpinnerLoader from '../../components/spinner';
+import { Getuniversity } from '../../config/simpleApiCall';
+
 class RegistrationScreen extends Component {
   constructor(props) {
     super(props);
@@ -34,9 +36,11 @@ class RegistrationScreen extends Component {
       l_name: '',
       email: '',
       password: '',
+      universities:[],
       confirmpassword: '',
       Dob: null,
-      role: 'user',
+      role: '4',
+      name: null,
       gender: '',
       mobile: null,
       university: '',
@@ -57,6 +61,13 @@ class RegistrationScreen extends Component {
   componentDidMount() {
     //  console.log(Platform);
     this.setState({ device_type: Platform.OS });
+    Getuniversity().then(response=>{
+      console.log(response)
+      if(response.status === 200 && response.data && response.data.success == true && response.data.data){
+        console.log(response.data.data)
+        this.setState({ universities: response.data.data})
+      }
+    })
     // this.getpermission();
   }
   componentWillReceiveProps(nextProps) {
@@ -120,7 +131,7 @@ class RegistrationScreen extends Component {
   };
 
   onSubmitHandle = () => {
-    const { name, email, password, confirmpassword, Extension, university, role, gender, Dob, mobile } = this.state;
+    const { selectedUni, name, email, password, confirmpassword, Extension, university, role, gender, Dob, mobile } = this.state;
     var dotIndex = email.lastIndexOf('.')
     var emailIndex = email.length;
     var today = new Date();
@@ -128,7 +139,7 @@ class RegistrationScreen extends Component {
     var age = today.getFullYear() - birthDate.getFullYear();
     console.log(email.slice(dotIndex, emailIndex))
     this.setState({ Extension: email.slice(dotIndex, emailIndex) })
-    if (name == "" || name == " " || name.length < 3) {
+    if (name === null || name == " " || name.length < 3) {
       this.setState({
         error: { nameErr: true, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
       });
@@ -209,7 +220,7 @@ class RegistrationScreen extends Component {
           });
         }, 3000);
       }
-      else if (university == "" || university == " ") {
+      else if (selectedUni === null) {
         this.setState({
           error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: true }
         });
@@ -240,6 +251,7 @@ class RegistrationScreen extends Component {
         }, 3000);
       }
       else {
+        console.log(selectedUni,'esllllllllllllllllll')
         name, email, password, confirmpassword, university, role, gender, Dob, mobile
         var data = {
           name: name,
@@ -251,7 +263,8 @@ class RegistrationScreen extends Component {
           password_confirmation: confirmpassword,
           device_token: this.state.device_token,
           device_type: this.state.device_type,
-          gender:gender
+          gender:gender,
+          university_id: selectedUni.id
         }
         this.setState({isloading:true});
         this.props.register_request(data)
@@ -333,8 +346,8 @@ class RegistrationScreen extends Component {
   };
 
   selectDropdownItem = (el) => {
-    this.setState({selectedUni: el});
-    this.setState({university:el.name,onAddUni:false})
+    console.log(el)
+    this.setState({ selectedUni: el, onAddUni: false });
   }
 
   renderDropdownList = (data) => {
@@ -397,7 +410,7 @@ class RegistrationScreen extends Component {
   };
 
   renderDropdownContainer = (headerText, placeholder, errTxt, isErr, image) => {
-    const { onAddUni, specificAgencyWorker, selectedUni, uniData} = this.state;
+    const { onAddUni, specificAgencyWorker, selectedUni, universities} = this.state;
     return (
       <View >
         <TouchableOpacity   onPress={() => this.setState({ onAddUni: true})}
@@ -454,8 +467,8 @@ class RegistrationScreen extends Component {
           </TouchableOpacity> */}
         </TouchableOpacity>
         {onAddUni &&
-          uniData.length !== 0 &&
-          this.renderDropdown(uniData)}
+          universities.length !== 0 &&
+          this.renderDropdown(universities)}
           {isErr && <View><Text style={{ color: 'red' }} >**{errTxt}</Text></View>}
       </View>
     );

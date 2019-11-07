@@ -9,7 +9,7 @@
 // import { ErrorHelper } from "../helpers";
 // function callRequest(data) {
 //   return ApiSauce.post(login_Api, data);
- 
+
 // }
 // let a = 1
 // function* watchRequest() {
@@ -22,7 +22,7 @@
 //     // delete payload.targetView;
 //     try {
 //       const response = yield call(callRequest, payload);
-     
+
 //       yield put(success(response));
 //         // setTimeout(() => {
 //         //   Actions.verify({
