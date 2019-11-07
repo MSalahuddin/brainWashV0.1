@@ -12,11 +12,11 @@ export default StyleSheet.create({
     width: Metrics.screenWidth * 0.95,
     marginLeft: Metrics.screenWidth * 0.025,
     borderRadius: Metrics.ratio(10),
-    marginTop: Metrics.ratio(120),
+    marginTop: Metrics.ratio(100),
     marginBottom: Metrics.ratio(10),
     paddingVertical: Metrics.ratio(20),
     backgroundColor: 'white',
-    elevation: 8,
+    elevation: 4,
     shadowColor: Colors.black,
     shadowOffset: {
       width: 0,
@@ -27,18 +27,27 @@ export default StyleSheet.create({
     flexDirection: 'column',
   },
   ProfileImgContainer: {
-    width: Metrics.ratio(130),
-    height: Metrics.ratio(130),
+    width: Metrics.ratio(110),
+    height: Metrics.ratio(110),
     borderColor: '#b4b4b4',
     borderWidth: 1,
     borderRadius: Metrics.ratio(100),
     position: 'absolute',
-    top: Metrics.ratio(-85),
-    left: Metrics.ratio(100),
+    top: Metrics.ratio(-60),
+    left: Metrics.ratio(120),
+    backgroundColor: 'grey',
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+    elevation: 4
   },
   profileImg: {
-    width: Metrics.ratio(130),
-    height: Metrics.ratio(130),
+    width: Metrics.ratio(110),
+    height: Metrics.ratio(110),
     borderRadius: 100,
   },
   UserName: {
@@ -65,12 +74,25 @@ export default StyleSheet.create({
   BioBody: {
     // flex:1,
     marginTop: Metrics.ratio(10),
-    marginLeft: Metrics.ratio(10),
+    marginLeft: Metrics.ratio(18),
+    borderWidth: 1,
+    borderColor: '#b4b4b4',
+    paddingLeft: 5,
+    paddingTop: 5,
+    paddingRight: 5,
+    borderRadius: Metrics.ratio(10),
+    marginRight: Metrics.ratio(10),
+    backgroundColor: 'white',
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+    elevation: 4
   },
-  BioTxt: {
-    marginTop: Metrics.ratio(15),
-    marginLeft: Metrics.ratio(10),
-  },
+  
   bodyFree: {
     fontFamily: Fonts.type.demibold,
     fontSize: Metrics.ratio(14),
@@ -80,12 +102,7 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.demibold,
     fontSize: Metrics.ratio(14),
     color: '#b4b4b4',
-    borderWidth: 1,
-    borderColor: '#b4b4b4',
-    paddingLeft: 5,
-    paddingTop: 5,
-    paddingRight: 5,
-    marginRight: Metrics.ratio(10),
+    
     width: Metrics.screenWidth * 0.85,
   },
   bodyProp: {

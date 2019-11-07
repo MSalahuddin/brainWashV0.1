@@ -63,7 +63,7 @@ class WasherhistoryScreen extends Component {
             )}
           <View style={styles.userDetail}>
             <Text style={styles.userName}>{order.user.name}</Text>
-
+            <Text style={styles.userEmail}>{order.user.email}</Text>
             <Text style={styles.userEmail}>
               {moment(order.created_at).format('DD-MM-YYYY')}
             </Text>
@@ -99,6 +99,8 @@ class WasherhistoryScreen extends Component {
           leftBtnPress={() => {
             Actions.pop();
           }}
+          headerIconStyle={{marginLeft: Metrics.ratio(40)}}
+          headerTextStyle={{marginLeft: Metrics.ratio(50)}}
         />
         <View>
           <ScrollView style={{marginBottom: Metrics.ratio(80)}}>

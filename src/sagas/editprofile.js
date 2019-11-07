@@ -20,9 +20,7 @@ function callRequest(data) {
 let a = 1;
 function* watchRequest() {
   while (true) {
-  
     const {payload} = yield take(types.EDITPROFILE.REQUEST);
-
     try {
       const response = yield call(callRequest, payload);
 

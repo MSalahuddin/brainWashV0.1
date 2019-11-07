@@ -38,24 +38,65 @@ class ProfileScreeen extends Component {
       // profile_pic:'',
       profileImg: null,
       showUpdateProfile: false,
+      isloading: false,
+      access_token: null,
     };
   }
+
   onStarRatingPress(rating) {
     this.setState({
       starCount: rating,
     });
   }
   componentDidMount() {
-    console.log(this.props);
+    console.log(this.props.user.user, '`iiiiiiiiiiiiiiiii`');
 
     this.setState({
       user: this.props.user.user,
       userDetails: this.props.user.user.details,
+      access_token: this.props.user.user.access_token,
     });
   }
-  componentWillReceiveProps(nextprops){
-    console.log("next====>",nextprops);
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps, 'nennnnnnnnnnnnnnn');
+    if (nextProps.editProfile) {
+      if (
+        !nextProps.editProfile.failure &&
+        !nextProps.editProfile.isFetching &&
+        nextProps.editProfile.data.data &&
+        nextProps.editProfile.data.success
+      ) {
+        this.setState({isloading: false});
+        console.log(
+          nextProps.editProfile.data.data,
+          'nennnnnnnnnnnnnnnnnnnnnnn',
+        );
+        let access_token = this.state.access_token;
+        let obj = {access_token};
+        let user = nextProps.editProfile.data.data;
+        user = {...user, ...obj};
+        nextProps.editProfile.data.data.access_token = this.state.access_token;
+        console.log(user, 'kkkkkkkkkkkjjjjjjjjjnnnnnnnnn');
+        this._storeUserdata({user: user});
+        // this.getData();
+        this.props.updateUser({user: user});
+      } else if (
+        nextProps.editProfile.failure &&
+        !nextProps.editProfile.isFetching
+      ) {
+        this.setState({isloading: false});
+      }
+    }
   }
+
+  _storeUserdata = async user => {
+    try {
+      await AsyncStorage.setItem('@storage_Key', JSON.stringify(user));
+      // this.props.updateUser(user)
+    } catch (e) {
+      // saving error
+    }
+  };
 
   openCamera = async get => {
     let options = {
@@ -370,8 +411,8 @@ class ProfileScreeen extends Component {
                   position: 'absolute',
                   backgroundColor: '#f3f5f6',
                   padding: Metrics.ratio(10),
-                  left: Metrics.ratio(100),
-                  top: Metrics.ratio(80),
+                  left: Metrics.ratio(70),
+                  top: Metrics.ratio(70),
                   borderRadius: Metrics.ratio(50),
                 }}>
                 <Image source={Images.Camera} />
@@ -387,13 +428,7 @@ class ProfileScreeen extends Component {
               this.onchangeName,
               // Images.emailIcon
             )}
-            {this.renderInputArea(
-              'BIO',
-              userDetails.bio,
-              'Required no of bags',
-              false,
-              this.onchangeBio,
-            )}
+         
             {this.renderNumberInputfield(
               'GRADUATION YEAR',
               userDetails.graduation,
@@ -420,16 +455,39 @@ class ProfileScreeen extends Component {
                 {/* {this.state.error.dobErr && <View><Text style={{ color: 'red' }} >*You are not allowed to register without valid date of birth</Text></View>} */}
               </View>
             </View>
+            {this.renderInputArea(
+              'BIO',
+              userDetails.bio,
+              'Required no of bags',
+              false,
+              this.onchangeBio,
+            )}
           </View>
-          <View style={styles.BioBody}></View>
+          {/* <View style={styles.BioBody}></View> */}
           <View
             style={{
               width: Metrics.screenWidth,
-              alignItems: 'center',
-              justifyContent: 'center',
+              
+              flexDirection: 'row'
             }}>
             <TouchableOpacity
-              style={styles.submitButtonView}
+              style={{width: Metrics.screenWidth * 0.4,
+                height: Metrics.ratio(45),
+                marginLeft: Metrics.screenWidth * 0.05,
+                marginTop: Metrics.ratio(20),
+                backgroundColor: '#89f3ff',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: Metrics.ratio(30),
+                // flexDirection: "row",
+                elevation: 4,
+                shadowColor: Colors.black,
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.18,
+                shadowRadius: 1.0}}
               onPress={() => {
                 this.save();
               }}>
@@ -443,7 +501,23 @@ class ProfileScreeen extends Component {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.submitButtonView}
+              style={{width: Metrics.screenWidth * 0.4,
+                height: Metrics.ratio(45),
+                marginLeft: Metrics.screenWidth * 0.05,
+                marginTop: Metrics.ratio(20),
+                backgroundColor: '#89f3ff',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: Metrics.ratio(30),
+                // flexDirection: "row",
+                elevation: 4,
+                shadowColor: Colors.black,
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.18,
+                shadowRadius: 1.0}}
               onPress={() => {
                 this.setState({showProfile: true, showUpdateProfile: false});
               }}>
@@ -463,7 +537,8 @@ class ProfileScreeen extends Component {
   };
   renderProfile = () => {
     const {user, userDetails} = this.state;
-
+    console.log(user,'iiiiiiiiiiiiiiooooo')
+    console.log(userDetails,'userDetailsuserDetailsuserDetailsuserDetails')
     // console.log(userDetails)
     return (
       <View>
@@ -478,23 +553,22 @@ class ProfileScreeen extends Component {
           </View>
           <View style={styles.UserName}>
             <Text style={styles.UserNameTxt}>
-              {userDetails && userDetails.first_name && userDetails.first_name}
+              {user && user.name && user.name}
             </Text>
             <StarRating
               disabled={false}
               maxStars={5}
-              starSize={20}
+              starSize={15}
               rating={this.state.starCount}
               fullStarColor={'#fec057'}
               selectedStar={rating => this.onStarRatingPress(rating)}
               containerStyle={{
                 paddingTop: 5,
                 marginTop: Metrics.ratio(5),
-                width: Metrics.screenWidth * 0.35,
-                marginLeft: Metrics.ratio(5),
+                width: Metrics.screenWidth * 0.25,
               }}
               starStyle={{
-                paddingLeft: Metrics.ratio(1) * 0.05,
+                paddingLeft: Metrics.ratio(0),
                 paddingRight: Metrics.ratio(0),
               }}
             />
@@ -530,13 +604,16 @@ class ProfileScreeen extends Component {
             </View>
           </View>
           <View style={styles.BioBody}>
-            <View style={styles.BioTxt}>
-              <Text style={styles.bodyHeading}>Bio</Text>
+           
+              <Text style={styles.bodyHeading}>Bio:</Text>
               {/* {!userDetails.bio && <Text style={styles.TxtBio}></Text>} */}
-              {userDetails && userDetails.bio && (
+              
+       {userDetails && userDetails.bio && (
                 <Text style={styles.TxtBio}>{userDetails.bio}</Text>
               )}
-            </View>
+   
+             
+            
           </View>
           <View
             style={{
@@ -569,6 +646,8 @@ class ProfileScreeen extends Component {
         <Header
           headerText={'BRAINWASH PROFILE'}
           leftIcon={Images.LeftArrow}
+          headerIconStyle={{marginLeft: Metrics.ratio(15)}}
+          headerTextStyle={{marginLeft: Metrics.ratio(20)}}
           leftBtnPress={() => this.props.navigation.navigate('dashboard')}
         />
         <ScrollView keyboardShouldPersistTaps="always">
@@ -584,7 +663,8 @@ class ProfileScreeen extends Component {
 
 const mapStateToProps = state => ({
   user: state.userReducer.user,
-  profile: state
+  profile: state,
+  editProfile: state.editProfile,
 });
 
 const actions = {

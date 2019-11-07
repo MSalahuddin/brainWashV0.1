@@ -74,15 +74,13 @@ export default StyleSheet.create({
   logoContainer: {
     // flex:1,
     alignItems: 'center',
-    alignContent: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
     width: Metrics.ratio(250),
     height: Metrics.ratio(90),
     borderRadius: Metrics.ratio(10),
-    position: "absolute",
-    top: Metrics.ratio(60),
-    left: Metrics.ratio(50),
+   
+   
 
   },
   menuButton: {

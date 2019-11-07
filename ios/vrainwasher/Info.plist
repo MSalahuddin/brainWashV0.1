@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>vrainwasher</string>
+	<string>BrainWash</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -37,24 +37,16 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow access location to access your current location</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Allow access location to access your current location</string>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow access location to access your current location</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Please allow camera permission</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please allow gallery permission</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Please allow permission</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AvenirNext-Bold.ttf</string>
@@ -125,5 +117,19 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>
