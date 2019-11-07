@@ -36,7 +36,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import Geocoder from 'react-native-geocoding';
 // import { request as order_request } from '../../actions/OrderAction';
 // import { exportDefaultSpecifier } from '@babel/types';
-
+Geocoder.init('AIzaSyCIGENLCfCwZwPaumiUQs21GfgMhgppa7s');
 const homePlace = {
   description: 'Home',
   geometry: {location: {lat: 48.8152937, lng: 2.4597668}},
@@ -49,7 +49,7 @@ const workPlace = {
 const GooglePlacesInput = getlocation => {
   return (
     <GooglePlacesAutocomplete
-      placeholder={getlocation.headerTxt}
+      placeholder={getlocation.place}
       minLength={1} // minimum length of text to search
       autoFocus={false}
       returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
@@ -65,7 +65,11 @@ const GooglePlacesInput = getlocation => {
         );
       }}
       listViewDisplayed={false}
-      getDefaultValue={() => ''}
+      getDefaultValue={watch => {
+        console.log(getlocation, 'wahhhhhhhhhhhhhhhhhhhhhhh');
+        return '';
+      }}
+      // getDefaultValue={() => getlocation.place}
       query={{
         // available options: https://developers.google.com/places/web-service/autocomplete
         key: 'AIzaSyCIGENLCfCwZwPaumiUQs21GfgMhgppa7s',
@@ -114,7 +118,7 @@ const GooglePlacesInput = getlocation => {
         'locality',
         'administrative_area_level_3',
       ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-      // predefinedPlaces={[homePlace, workPlace]}
+      // predefinedPlaces={[homePlace]}
 
       debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
       // renderLeftButton={()  => <Image source={Images.chatIcon} />}
@@ -133,6 +137,8 @@ class FindWashScreen extends Component {
       ownDetergents: '',
       folded: '',
       hung: '',
+      pickupvalue: null,
+      dropoffvalue: null,
       special_instruction: '',
       scholarShipDonation: 1,
       total: 0,
@@ -170,8 +176,22 @@ class FindWashScreen extends Component {
         authorizationLevel: 'always',
       });
     Platform.OS === 'ios' && Geolocation.requestAuthorization();
-    Geolocation.getCurrentPosition(info => {
+    this.setInitialCoordinates();
+    this.findCords();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  setInitialCoordinates = () => {
+    Geolocation.getCurrentPosition(async info => {
+      // console.log(this.getLocationName(info.coords.latitude, info.coords.longitude))
+      const loc = await this.getLocationName(
+        info.coords.latitude,
+        info.coords.longitude,
+      );
+
       this.setState({
+        pickupvalue: loc,
+        dropoffvalue: loc,
         pickup: {
           latitude: info.coords.latitude,
           longitude: info.coords.longitude,
@@ -186,9 +206,27 @@ class FindWashScreen extends Component {
         },
       });
     });
-    this.findCords();
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-  }
+  };
+  getLocationName = (lat, lng) => {
+    return new Promise((resolve, reject) => {
+      Geocoder.from({
+        latitude: lat,
+        longitude: lng,
+      })
+        .then(json => {
+          var addressComponent = json.results[0].formatted_address;
+          resolve(addressComponent);
+        })
+        .catch(
+          error => {
+            reject(error);
+            //  return null;
+          },
+          // console.warn(error)
+        );
+    });
+    console.log('hello');
+  };
 
   componentWillUnmount() {
     console.log('Remove event listner');
@@ -298,6 +336,85 @@ class FindWashScreen extends Component {
     }
     // this.props.order_request(data);
   };
+
+  // GooglePlacesInput = (getlocation, headerText, pickUpValue ) => {
+  //   console.log(pickUpValue, 'kkkkkkkkkkkkkkkkkmmmmm')
+  //   return (
+  //     <GooglePlacesAutocomplete
+  //       placeholder={pickUpValue}
+  //       minLength={1} // minimum length of text to search
+  //       autoFocus={false}
+  //       returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+  //       keyboardAppearance={'light'} // Can be left out for default keyboardAppearance https://facebook.github.io/react-native/docs/textinput.html#keyboardappearance
+  //       fetchDetails={true}
+  //       renderDescription={row => row.description} // custom description render
+  //       onPress={(data, details = null) => {
+  //         // 'details' is provided when fetchDetails = true
+  //         console.log(data, details);
+  //         getlocation.getpicklatLng(
+  //           details.geometry.location.lat,
+  //           details.geometry.location.lng,
+  //         );
+  //       }}
+  //       listViewDisplayed={false}
+  //       getDefaultValue={() => pickUpValue}
+  //       // getDefaultValue={() => getlocation.place}
+  //       query={{
+  //         // available options: https://developers.google.com/places/web-service/autocomplete
+  //         key: 'AIzaSyCIGENLCfCwZwPaumiUQs21GfgMhgppa7s',
+  //         language: 'en', // language of the results
+  //         // types: '(cities)', // default: 'geocode'
+  //       }}
+  //       styles={{
+  //         textInputContainer: {
+  //           width: Metrics.screenWidth,
+  //           borderColor: 'white',
+  //           borderWidth: Metrics.ratio(1),
+  //         },
+  //         description: {
+  //           fontWeight: 'bold',
+  //           // backgroundColor:'white'
+  //         },
+  //         predefinedPlacesDescription: {
+  //           color: '#1faadb',
+  //           // backgroundColor:'white'
+  //         },
+  //         listView: {
+  //           height: Metrics.ratio(30),
+  //           backgroundColor: 'white',
+  //           // backgroundColor:'white'
+  //         },
+  //         poweredContainer: {},
+  //       }}
+  //       currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+  //       currentLocationLabel="Current location"
+  //       nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+  //       GoogleReverseGeocodingQuery={
+  //         {
+  //           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+  //         }
+  //       }
+  //       GooglePlacesSearchQuery={{
+  //         // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+  //         rankby: 'distance',
+  //         type: 'cafe',
+  //       }}
+  //       GooglePlacesDetailsQuery={{
+  //         // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
+  //         fields: 'formatted_address',
+  //       }}
+  //       filterReverseGeocodingByTypes={[
+  //         'locality',
+  //         'administrative_area_level_3',
+  //       ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+  //       // predefinedPlaces={[homePlace, workPlace]}
+
+  //       debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+  //       // renderLeftButton={()  => <Image source={Images.chatIcon} />}
+  //       // renderRightButton={() => <Text>Custom text after the input</Text>}
+  //     />
+  //   );
+  // };
 
   pickupbackbutton = () => {
     // this.props.navigation.navigate.pop();
@@ -675,16 +792,8 @@ class FindWashScreen extends Component {
     });
   };
 
-  getLocationName = () => {
-    Geocoder.from(41.89, 12.49)
-      .then(json => {
-        var addressComponent = json.results[0].address_components[0];
-        console.log(addressComponent, 'dsdasda');
-      })
-      .catch(error => console.warn(error));
-  };
-
   renderPickup = () => {
+    const {pickupvalue} = this.state;
     return (
       <View
         style={{
@@ -719,26 +828,52 @@ class FindWashScreen extends Component {
                 <MapView
                   // mapType={Platform.OS == "android" ? "none" : "standard"}
                   onRegionChangeComplete={e => {
-                    this.setState({
-                      pickup: {
-                        latitude: e.latitude,
-                        longitude: e.longitude,
-                        latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,
+                    this.setState(
+                      {
+                        // dropoffvalue:this.getLocationName( e.latitude,e.longitude),
+                        pickup: {
+                          latitude: e.latitude,
+                          longitude: e.longitude,
+                          latitudeDelta: 0.015,
+                          longitudeDelta: 0.0121,
+                        },
                       },
-                    });
+                      async () => {
+                        let loc = await this.getLocationName(
+                          e.latitude,
+                          e.longitude,
+                        );
+                        this.setState({
+                          pickupvalue: loc,
+                          dropoffvalue: loc,
+                        });
+                      },
+                    );
                   }}
                   onPress={e => {
                     console.log(e.nativeEvent);
 
-                    this.setState({
-                      pickup: {
-                        latitude: e.nativeEvent.coordinate.latitude,
-                        longitude: e.nativeEvent.coordinate.longitude,
-                        latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,
+                    this.setState(
+                      {
+                        // dropoffvalue:this.getLocationName(e.nativeEvent.coordinate.latitude,  e.nativeEvent.coordinate.longitude),
+                        pickup: {
+                          latitude: e.nativeEvent.coordinate.latitude,
+                          longitude: e.nativeEvent.coordinate.longitude,
+                          latitudeDelta: 0.015,
+                          longitudeDelta: 0.0121,
+                        },
                       },
-                    });
+                      async () => {
+                        let loc = await this.getLocationName(
+                          e.nativeEvent.coordinate.latitude,
+                          e.nativeEvent.coordinate.longitude,
+                        );
+                        this.setState({
+                          pickupvalue: loc,
+                          dropoffvalue: loc,
+                        });
+                      },
+                    );
                   }}
                   provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                   style={{...StyleSheet.absoluteFillObject}}
@@ -749,23 +884,37 @@ class FindWashScreen extends Component {
                     style={{width: 40, height: 40}}
                     coordinate={this.state.pickup}
                     onDragEnd={e => {
-                      this.setState({
-                        pickup: {
-                          latitude: e.nativeEvent.coordinate.latitude,
-                          longitude: e.nativeEvent.coordinate.longitude,
-                          latitudeDelta: 0.015,
-                          longitudeDelta: 0.0121,
+                      this.setState(
+                        {
+                          // pickupvalue:this.getLocationName( e.nativeEvent.coordinate.latitude,  e.nativeEvent.coordinate.longitude),
+
+                          pickup: {
+                            latitude: e.nativeEvent.coordinate.latitude,
+                            longitude: e.nativeEvent.coordinate.longitude,
+                            latitudeDelta: 0.015,
+                            longitudeDelta: 0.0121,
+                          },
                         },
-                      });
+                        async () => {
+                          let loc = await this.getLocationName(
+                            e.nativeEvent.coordinate.latitude,
+                            e.nativeEvent.coordinate.longitude,
+                          );
+                          this.setState({
+                            pickupvalue: loc,
+                          });
+                        },
+                      );
                     }}
                   />
                 </MapView>
               )}
           </View>
-
+          {/* {this.GooglePlacesInput(this.getpicklatLng, "Select Pick Up Location", pickupvalue === null ? '' : pickupvalue)} */}
           <GooglePlacesInput
             getpicklatLng={this.getpicklatLng}
             headerTxt="Select Pick Up Location"
+            place={pickupvalue === null ? '' : pickupvalue}
           />
           {
             <TouchableOpacity
@@ -817,6 +966,7 @@ class FindWashScreen extends Component {
     );
   };
   renderDropOff = () => {
+    const {dropoffvalue} = this.state;
     return (
       <View
         style={{
@@ -850,26 +1000,50 @@ class FindWashScreen extends Component {
               <MapView
                 // mapType={Platform.OS == "android" ? "none" : "standard"}
                 onRegionChangeComplete={e => {
-                  this.setState({
-                    dropoff: {
-                      latitude: e.latitude,
-                      longitude: e.longitude,
-                      latitudeDelta: 0.015,
-                      longitudeDelta: 0.0121,
+                  this.setState(
+                    {
+                      // dropoffvalue:this.getLocationName( e.latitude,e.longitude),
+                      dropoff: {
+                        latitude: e.latitude,
+                        longitude: e.longitude,
+                        latitudeDelta: 0.015,
+                        longitudeDelta: 0.0121,
+                      },
                     },
-                  });
+                    async () => {
+                      let loc = await this.getLocationName(
+                        e.latitude,
+                        e.longitude,
+                      );
+                      this.setState({
+                        dropoffvalue: loc,
+                      });
+                    },
+                  );
                 }}
                 onPress={e => {
                   console.log(e.nativeEvent);
 
-                  this.setState({
-                    dropoff: {
-                      latitude: e.nativeEvent.coordinate.latitude,
-                      longitude: e.nativeEvent.coordinate.longitude,
-                      latitudeDelta: 0.015,
-                      longitudeDelta: 0.0121,
+                  this.setState(
+                    {
+                      // dropoffvalue:this.getLocationName( e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude),
+                      dropoff: {
+                        latitude: e.nativeEvent.coordinate.latitude,
+                        longitude: e.nativeEvent.coordinate.longitude,
+                        latitudeDelta: 0.015,
+                        longitudeDelta: 0.0121,
+                      },
                     },
-                  });
+                    async () => {
+                      let loc = await this.getLocationName(
+                        e.nativeEvent.coordinate.latitude,
+                        e.nativeEvent.coordinate.longitude,
+                      );
+                      this.setState({
+                        dropoffvalue: loc,
+                      });
+                    },
+                  );
                 }}
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={{...StyleSheet.absoluteFillObject}}
@@ -879,14 +1053,26 @@ class FindWashScreen extends Component {
                   title="This is a title"
                   coordinate={this.state.dropoff}
                   onDragEnd={e => {
-                    this.setState({
-                      pickup: {
-                        latitude: e.nativeEvent.coordinate.latitude,
-                        longitude: e.nativeEvent.coordinate.longitude,
-                        latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,
+                    this.setState(
+                      {
+                        pickup: {
+                          // dropoffvalue:this.getLocationName( e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude),
+                          latitude: e.nativeEvent.coordinate.latitude,
+                          longitude: e.nativeEvent.coordinate.longitude,
+                          latitudeDelta: 0.015,
+                          longitudeDelta: 0.0121,
+                        },
                       },
-                    });
+                      async () => {
+                        let loc = await this.getLocationName(
+                          e.nativeEvent.coordinate.latitude,
+                          e.nativeEvent.coordinate.longitude,
+                        );
+                        this.setState({
+                          dropoffvalue: loc,
+                        });
+                      },
+                    );
                   }}
                 />
               </MapView>
@@ -896,6 +1082,7 @@ class FindWashScreen extends Component {
           <GooglePlacesInput
             getpicklatLng={this.getdroplatLng}
             headerTxt="Select Drop Off Location"
+            place={dropoffvalue === null ? '' : dropoffvalue}
           />
           {this.state.dropoff && (
             <TouchableOpacity
