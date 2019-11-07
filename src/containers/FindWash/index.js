@@ -33,6 +33,7 @@ import {updateUser, removeUser} from '../../actions/userAction';
 import configureStore from '../../store';
 import {request as order_request} from '../../actions/OrderAction';
 import RNPickerSelect from 'react-native-picker-select';
+import Geocoder from 'react-native-geocoding';
 // import { request as order_request } from '../../actions/OrderAction';
 // import { exportDefaultSpecifier } from '@babel/types';
 
@@ -69,7 +70,7 @@ const GooglePlacesInput = getlocation => {
         // available options: https://developers.google.com/places/web-service/autocomplete
         key: 'AIzaSyCIGENLCfCwZwPaumiUQs21GfgMhgppa7s',
         language: 'en', // language of the results
-        types: '(cities)', // default: 'geocode'
+        // types: '(cities)', // default: 'geocode'
       }}
       styles={{
         textInputContainer: {
@@ -674,7 +675,15 @@ class FindWashScreen extends Component {
     });
   };
 
-  // Components Of Findwash
+  getLocationName = () => {
+    Geocoder.from(41.89, 12.49)
+      .then(json => {
+        var addressComponent = json.results[0].address_components[0];
+        console.log(addressComponent, 'dsdasda');
+      })
+      .catch(error => console.warn(error));
+  };
+
   renderPickup = () => {
     console.log('pickup', this.state.pickup);
     return (
@@ -707,16 +716,16 @@ class FindWashScreen extends Component {
               this.state.pickup.longitude !== null && (
                 <MapView
                   // mapType={Platform.OS == "android" ? "none" : "standard"}
-                  // onRegionChange={e => {
-                  //   this.setState({
-                  //     pickup: {
-                  //       latitude: e.latitude,
-                  //       longitude: e.longitude,
-                  //       latitudeDelta: 0.015,
-                  //       longitudeDelta: 0.0121,
-                  //     },
-                  //   });
-                  // }}
+                  onRegionChangeComplete={e => {
+                    this.setState({
+                      pickup: {
+                        latitude: e.latitude,
+                        longitude: e.longitude,
+                        latitudeDelta: 0.015,
+                        longitudeDelta: 0.0121,
+                      },
+                    });
+                  }}
                   onPress={e => {
                     console.log(e.nativeEvent);
 
@@ -835,16 +844,16 @@ class FindWashScreen extends Component {
             {this.state.dropoff && (
               <MapView
                 // mapType={Platform.OS == "android" ? "none" : "standard"}
-                // onRegionChange={e => {
-                //   this.setState({
-                //     dropoff: {
-                //       latitude: e.latitude,
-                //       longitude: e.longitude,
-                //       latitudeDelta: 0.015,
-                //       longitudeDelta: 0.0121,
-                //     },
-                //   });
-                // }}
+                onRegionChangeComplete={e => {
+                  this.setState({
+                    dropoff: {
+                      latitude: e.latitude,
+                      longitude: e.longitude,
+                      latitudeDelta: 0.015,
+                      longitudeDelta: 0.0121,
+                    },
+                  });
+                }}
                 onPress={e => {
                   console.log(e.nativeEvent);
 

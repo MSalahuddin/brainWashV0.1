@@ -15,19 +15,10 @@ function* watchRequest() {
   while (true) {
     // a++;
     const {payload} = yield take(types.LOGIN.REQUEST);
-    console.log(payload, 'kkkkkkkkkkkkkkooooooooooooooooo');
     try {
       const response = yield call(callRequest, payload);
 
       yield put(success(response));
-      // setTimeout(() => {
-      //   Actions.verify({
-      //     phoneNumber: JSON.stringify(payload.phoneNumber).replace(/\"/g, ""),
-      //     targetView: targetView,
-
-      //     title: strings("navtitles.otp")
-      //   });
-      // }, 800);
     } catch (err) {
       console.log(err);
       yield put(failure(err));
