@@ -32,7 +32,9 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import {updateUser, removeUser} from '../../actions/userAction';
 import configureStore from '../../store';
 import {request as order_request} from '../../actions/OrderAction';
-import {exportDefaultSpecifier} from '@babel/types';
+import RNPickerSelect from 'react-native-picker-select';
+// import { request as order_request } from '../../actions/OrderAction';
+// import { exportDefaultSpecifier } from '@babel/types';
 
 const homePlace = {
   description: 'Home',
@@ -46,7 +48,7 @@ const workPlace = {
 const GooglePlacesInput = getlocation => {
   return (
     <GooglePlacesAutocomplete
-      placeholder="Search"
+      placeholder={getlocation.headerTxt}
       minLength={1} // minimum length of text to search
       autoFocus={false}
       returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
@@ -138,8 +140,8 @@ class FindWashScreen extends Component {
       detergentErr: false,
       bagErr: false,
       pickup: {
-        latitude: null,
-        longitude: null,
+        latitude: 48.8496818,
+        longitude: 2.2940881,
         latitudeDelta: 0.015,
         longitudeDelta: 0.0121,
       },
@@ -149,8 +151,8 @@ class FindWashScreen extends Component {
       showForm: false,
       isCheckedExperience: false,
       dropoff: {
-        latitude: null,
-        longitude: null,
+        latitude: 48.8496818,
+        longitude: 2.2940881,
         latitudeDelta: 0.015,
         longitudeDelta: 0.0121,
       },
@@ -159,7 +161,7 @@ class FindWashScreen extends Component {
   componentDidMount() {
     console.log('add event listner');
     // geoloca
-    Geolocation.setRNConfiguration();
+    Platform.OS !== 'ios' && Geolocation.setRNConfiguration();
     // navigator.geolocation = require('@react-native-community/geolocation');
     Platform.OS === 'ios' &&
       Geolocation.setRNConfiguration({
@@ -354,23 +356,61 @@ class FindWashScreen extends Component {
             ]}
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
-          <Picker
+          <RNPickerSelect
+            onValueChange={value => {
+              console.log(value, 'valllllsjkdsahkdjh');
+              var total = 10.99;
+              if (value == 1) {
+                total = total + 1;
+                this.setState({Nofofbags: value, total: total});
+              } else if (value == 2) {
+                total = total + 7.99 + 1;
+                this.setState({Nofofbags: value, total: total});
+              }
+              console.log(this.state.Nofofbags);
+            }}
+            items={[{label: '1', value: '1'}, {label: '2', value: '2'}]}
+            placeholder={{
+              label: 'Select No. Of Bags',
+              value: null,
+            }}
+            style={{
+              placeholder: {
+                fontSize: Metrics.ratio(16),
+                color: 'black',
+                fontFamily: Fonts.type.regular,
+                marginTop: Metrics.ratio(15),
+              },
+              inputIOS: {
+                marginTop: Metrics.ratio(15),
+                fontFamily: Fonts.type.regular,
+                fontSize: Metrics.ratio(16),
+                color: 'black',
+              },
+              viewContainer: {
+                height: 50,
+                width: Metrics.screenWidth * 0.8,
+                paddingLeft: Metrics.ratio(15),
+              },
+            }}
+          />
+          {/* <Picker
             selectedValue={this.state.Nofofbags}
-            style={{height: 50, width: 100}}
+            style={{ height: 50, width: 100 }}
             onValueChange={(itemValue, itemIndex) => {
               var total = 10.99;
               if (itemValue == '1') {
                 total = total + 1;
-                this.setState({Nofofbags: itemValue, total: total});
+                this.setState({ Nofofbags: itemValue, total: total });
               } else if (itemValue == '2') {
                 total = total + 7.99 + 1;
-                this.setState({Nofofbags: itemValue, total: total});
+                this.setState({ Nofofbags: itemValue, total: total });
               }
               console.log(this.state.Nofofbags);
             }}>
             <Picker.Item label="1" value="1" />
             <Picker.Item label="2" value="2" />
-          </Picker>
+          </Picker> */}
         </View>
         {Iserr && (
           <View>
@@ -380,6 +420,7 @@ class FindWashScreen extends Component {
       </View>
     );
   };
+
   renderInputfield = (
     headerText,
     placeholder,
@@ -438,7 +479,7 @@ class FindWashScreen extends Component {
       </View>
     );
   };
-  // text Area
+
   renderInputArea = (
     headerText,
     placeholder,
@@ -495,8 +536,11 @@ class FindWashScreen extends Component {
       <View style={styles.inputFieldView}>
         {tooltip == true && (
           <Tooltip
+            // arrowSize={{ width: 8, height: 8} }
             isVisible={this.state.toolTipVisible}
-            content={<Text>Check this out!</Text>}
+            content={
+              <Text>Customer's has to be provide their own hangers</Text>
+            }
             placement="top"
             onClose={() => this.setState({toolTipVisible: false})}>
             <TouchableHighlight style={styles.touchable}>
@@ -643,12 +687,12 @@ class FindWashScreen extends Component {
         <View
           style={{
             width: Metrics.screenWidth,
-            height: Metrics.screenHeight * 0.8,
+            height: Metrics.screenHeight * 0.9,
             // marginLeft: Metrics.screenWidth * 0.025,
             borderRadius: Metrics.ratio(10),
             marginTop: Metrics.ratio(10),
             marginBottom: Metrics.ratio(10),
-            backgroundColor: 'red',
+            backgroundColor: 'white',
             elevation: 8,
           }}>
           <View
@@ -663,6 +707,28 @@ class FindWashScreen extends Component {
               this.state.pickup.longitude !== null && (
                 <MapView
                   // mapType={Platform.OS == "android" ? "none" : "standard"}
+                  // onRegionChange={e => {
+                  //   this.setState({
+                  //     pickup: {
+                  //       latitude: e.latitude,
+                  //       longitude: e.longitude,
+                  //       latitudeDelta: 0.015,
+                  //       longitudeDelta: 0.0121,
+                  //     },
+                  //   });
+                  // }}
+                  onPress={e => {
+                    console.log(e.nativeEvent);
+
+                    this.setState({
+                      pickup: {
+                        latitude: e.nativeEvent.coordinate.latitude,
+                        longitude: e.nativeEvent.coordinate.longitude,
+                        latitudeDelta: 0.015,
+                        longitudeDelta: 0.0121,
+                      },
+                    });
+                  }}
                   provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                   style={{...StyleSheet.absoluteFillObject}}
                   region={this.state.pickup}>
@@ -686,7 +752,10 @@ class FindWashScreen extends Component {
               )}
           </View>
 
-          <GooglePlacesInput getpicklatLng={this.getpicklatLng} />
+          <GooglePlacesInput
+            getpicklatLng={this.getpicklatLng}
+            headerTxt="Select Pick Up Location"
+          />
           {
             <TouchableOpacity
               onPress={() => {
@@ -747,7 +816,7 @@ class FindWashScreen extends Component {
         <View
           style={{
             width: Metrics.screenWidth,
-            height: Metrics.screenHeight * 0.8,
+            height: Metrics.screenHeight * 0.9,
             //  marginLeft: Metrics.screenWidth * 0.025,
             borderRadius: Metrics.ratio(10),
             marginTop: Metrics.ratio(10),
@@ -766,6 +835,28 @@ class FindWashScreen extends Component {
             {this.state.dropoff && (
               <MapView
                 // mapType={Platform.OS == "android" ? "none" : "standard"}
+                // onRegionChange={e => {
+                //   this.setState({
+                //     dropoff: {
+                //       latitude: e.latitude,
+                //       longitude: e.longitude,
+                //       latitudeDelta: 0.015,
+                //       longitudeDelta: 0.0121,
+                //     },
+                //   });
+                // }}
+                onPress={e => {
+                  console.log(e.nativeEvent);
+
+                  this.setState({
+                    dropoff: {
+                      latitude: e.nativeEvent.coordinate.latitude,
+                      longitude: e.nativeEvent.coordinate.longitude,
+                      latitudeDelta: 0.015,
+                      longitudeDelta: 0.0121,
+                    },
+                  });
+                }}
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={{...StyleSheet.absoluteFillObject}}
                 region={this.state.dropoff}>
@@ -788,7 +879,10 @@ class FindWashScreen extends Component {
             )}
           </View>
 
-          <GooglePlacesInput getpicklatLng={this.getdroplatLng} />
+          <GooglePlacesInput
+            getpicklatLng={this.getdroplatLng}
+            headerTxt="Select Drop Off Location"
+          />
           {this.state.dropoff && (
             <TouchableOpacity
               onPress={() => {
@@ -813,7 +907,7 @@ class FindWashScreen extends Component {
                   fontSize: Metrics.ratio(16),
                   fontFamily: Fonts.type.demibold,
                 }}>
-                Confirm DropOff
+                Confirm Drop Off
               </Text>
             </TouchableOpacity>
           )}
@@ -932,6 +1026,8 @@ class FindWashScreen extends Component {
         <Header
           headerText={'FIND A WASH'}
           leftIcon={Images.LeftArrow}
+          headerIconStyle={{marginLeft: Metrics.ratio(40)}}
+          headerTextStyle={{marginLeft: Metrics.ratio(45)}}
           leftBtnPress={() => {
             if (this.state.showPickup) {
               this.pickupbackbutton();
