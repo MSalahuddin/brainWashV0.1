@@ -42,6 +42,7 @@ const LogoSmall = require('../assets/Images/logosmall.png');
 const loader = require('../assets/Images/loader.gif');
 const Logout = require('../assets/Images/icon/logout.png');
 const Camera = require('../assets/Images/icon/photo_camera.png');
+const markerIcon = require('../assets/Images/icon/marker.png');
 export default {
   backgroundImage,
   wash_history,
@@ -87,4 +88,5 @@ export default {
   loader,
   Logout,
   Camera,
+  markerIcon,
 };
