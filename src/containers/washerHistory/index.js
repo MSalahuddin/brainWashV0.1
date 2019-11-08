@@ -15,12 +15,14 @@ import {Fonts, Metrics, Images} from '../../theme';
 import DatePicker from 'react-native-datepicker';
 import {Actions} from 'react-native-router-flux';
 import {request as get_wash_history} from '../../actions/WashHistoryAction';
+import SpinnerLoader from '../../components/spinner';
 import moment from 'moment';
 class WasherhistoryScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       orders: null,
+      isloading:false,
     };
   }
 
@@ -42,8 +44,12 @@ class WasherhistoryScreen extends Component {
   componentWillMount() {
     this.getData();
   }
-
+  renderOverlaySpinner = () => {
+    const {isloading} = this.state;
+    return <SpinnerLoader isloading={isloading} />;
+  };
   getData = () => {
+    this.setState({isloading:true});
     const {user} = this.props;
     console.log("uessaassas",user)
     const data = {access_token: user.user.access_token};
@@ -109,6 +115,7 @@ class WasherhistoryScreen extends Component {
             {orders && orders.map(order => this.renderOrder(order))}
           </ScrollView>
         </View>
+        {this.renderOverlaySpinner()}
       </View>
     );
   }

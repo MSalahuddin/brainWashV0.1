@@ -15,6 +15,7 @@ import {Fonts, Metrics, Images} from '../../theme';
 import DatePicker from 'react-native-datepicker';
 import {Actions} from 'react-native-router-flux';
 import {request as get_wash_history} from '../../actions/WashHistoryAction';
+import SpinnerLoader from '../../components/spinner';
 import moment from 'moment';
 
 class UserStatusScreen extends Component {
@@ -22,6 +23,7 @@ class UserStatusScreen extends Component {
     super(props);
     this.state = {
       orders: null,
+      isloading:false,
     };
   }
 
@@ -47,9 +49,13 @@ class UserStatusScreen extends Component {
   componentWillMount() {
     this.getData();
   }
-
+  renderOverlaySpinner = () => {
+    const {isloading} = this.state;
+    return <SpinnerLoader isloading={isloading} />;
+  };
   getData = () => {
     const {user} = this.props;
+    this.setState({isloading:true})
     console.log(user);
     const data = {access_token: user.user.access_token};
     this.props.get_wash_history(data);
@@ -150,6 +156,7 @@ class UserStatusScreen extends Component {
             {orders && orders.map(order => this.renderOrder(order))}
           </ScrollView>
         </View>
+        {this.renderOverlaySpinner()}
       </View>
     );
   }

@@ -655,13 +655,14 @@ class FindWashScreen extends Component {
         {tooltip == true && (
           <Tooltip
             // arrowSize={{ width: 8, height: 8} }
+            tooltipStyle={{width:Metrics.screenWidth*0.30,position:"absolute",left:Metrics.ratio(5)}}
             isVisible={this.state.toolTipVisible}
             content={
               <Text>Customer's has to be provide their own hangers</Text>
             }
             placement="top"
             onClose={() => this.setState({toolTipVisible: false})}>
-            <TouchableHighlight style={styles.touchable}>
+            <TouchableHighlight style={styles.touchable} displayInsets={{ top: 24, bottom: 24, left: 24, right: 24} }>
               <Text style={styles.inputFieldHeaderText}>{headerText}</Text>
             </TouchableHighlight>
           </Tooltip>

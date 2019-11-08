@@ -20,6 +20,7 @@ import {updateUser, removeUser} from '../../actions/userAction';
 import StarRating from 'react-native-star-rating';
 import {request as Edit_profile} from '../../actions/EditProfileAction';
 import DatePicker from 'react-native-datepicker';
+import SpinnerLoader from '../../components/spinner';
 import styles from './styles';
 import ImagePicker from 'react-native-image-picker';
 
@@ -34,6 +35,7 @@ class ProfileScreeen extends Component {
       dob: null,
       name: '',
       bio: '',
+      
       graduation: null,
       // profile_pic:'',
       profileImg: null,
@@ -124,7 +126,10 @@ class ProfileScreeen extends Component {
       });
     }
   };
-
+  renderOverlaySpinner = () => {
+    const { isloading } = this.state;
+    return <SpinnerLoader isloading={isloading} />;
+  };
   onchangeName = e => {
     this.setState({name: e});
   };
@@ -194,6 +199,7 @@ class ProfileScreeen extends Component {
         var token = user.access_token;
         console.log(token);
         var datawithtoken = {token: token, payload: payload};
+        this.setState({isloading:true})
         this.props.Edit_profile(datawithtoken);
         console.log(datawithtoken);
       }
@@ -570,6 +576,7 @@ class ProfileScreeen extends Component {
       </View>
     );
   };
+  
   renderProfile = () => {
     const {user, userDetails} = this.state;
     console.log(user, 'iiiiiiiiiiiiiiooooo');
@@ -687,6 +694,7 @@ class ProfileScreeen extends Component {
             {this.state.showUpdateProfile && this.renderUpdateProfile()}
           </View>
         </ScrollView>
+        {this.renderOverlaySpinner()}
       </View>
     );
   }
