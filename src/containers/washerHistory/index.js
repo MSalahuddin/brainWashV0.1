@@ -25,6 +25,7 @@ class WasherhistoryScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps,"saaaaaaaaaaaaaaaaaaaaaaaa")
     if (nextProps.washHistory) {
       if (
         !nextProps.washHistory.failure &&
@@ -44,6 +45,7 @@ class WasherhistoryScreen extends Component {
 
   getData = () => {
     const {user} = this.props;
+    console.log("uessaassas",user)
     const data = {access_token: user.user.access_token};
     this.props.get_wash_history(data);
   };

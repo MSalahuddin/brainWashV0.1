@@ -12,7 +12,7 @@ function callRequest(data) {
 }
 let a = 1;
 function* watchRequest() {
-  while (a === 1) {
+  while (true) {
     a++;
     const {payload} = yield take(types.WASHHISTORY.REQUEST);
     // const { targetView } = payload;
