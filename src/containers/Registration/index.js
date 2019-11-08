@@ -25,18 +25,19 @@ import { request as register_request } from '../../actions/RegisterAction';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import SpinnerLoader from '../../components/spinner';
 import { Getuniversity } from '../../config/simpleApiCall';
+import RNPickerSelect from 'react-native-picker-select';
 
 class RegistrationScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       startDate: false,
-      isloading:false,
+      isloading: false,
       f_name: '',
       l_name: '',
       email: '',
       password: '',
-      universities:[],
+      universities: [],
       confirmpassword: '',
       Dob: null,
       role: '4',
@@ -48,24 +49,37 @@ class RegistrationScreen extends Component {
       device_type: '',
       Extension: '',
       extensionErr: false,
-      uniData : [
-        {name: "University 1"},
-        {name: "University 2"}
-      ],
+      erroroccur: false,
       onAddUni: false,
-        selectedUni: null,
-      error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false },
+      selectedUni: null,
+      nameErr: false,
+      emailErr: false,
+      passwordErr: false,
+      cPasswordErr: false,
+      dobErr: false,
+      roleErr: false,
+      genderErr: false,
+      mobileErr: false,
+      unversityErr: false
+
     };
   }
 
   componentDidMount() {
     //  console.log(Platform);
     this.setState({ device_type: Platform.OS });
-    Getuniversity().then(response=>{
+    Getuniversity().then(response => {
       console.log(response)
-      if(response.status === 200 && response.data && response.data.success == true && response.data.data){
+      if (response.status === 200 && response.data && response.data.success == true && response.data.data) {
         console.log(response.data.data)
-        this.setState({ universities: response.data.data})
+        var data = response.data.data;
+        var array = [];
+        data.map((v, i) => {
+          var data = { label: v.name, value: v.id }
+          array.push(data);
+          console.log("asasasas", v)
+        })
+        this.setState({ universities: array })
       }
     })
     // this.getpermission();
@@ -73,7 +87,7 @@ class RegistrationScreen extends Component {
   componentWillReceiveProps(nextProps) {
     // console.log(nextProps);
     if (nextProps.register) {
-      this.setState({isloading:false})
+      this.setState({ isloading: false })
       if (
         !nextProps.register.failure &&
         !nextProps.register.isFetching &&
@@ -81,10 +95,10 @@ class RegistrationScreen extends Component {
         nextProps.register.data.data.user.access_token
       ) {
         console.log("hello")
-         Alert.alert('SUCCESSFUL', 'You have been Registered successfully', [
+        Alert.alert('SUCCESSFUL', 'You have been Registered successfully', [
 
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ]);
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
         this.props.navigation.pop();
       }
     }
@@ -131,152 +145,151 @@ class RegistrationScreen extends Component {
   };
 
   onSubmitHandle = () => {
-    const { selectedUni, name, email, password, confirmpassword, Extension, university, role, gender, Dob, mobile } = this.state;
+    const { selectedUni, name, email, password, confirmpassword, university, role, gender, Dob, mobile } = this.state;
+    console.log(selectedUni)
     var dotIndex = email.lastIndexOf('.')
     var emailIndex = email.length;
     var today = new Date();
     var birthDate = new Date(Dob);
     var age = today.getFullYear() - birthDate.getFullYear();
     console.log(email.slice(dotIndex, emailIndex))
-    this.setState({ Extension: email.slice(dotIndex, emailIndex) })
+
     if (name === null || name == " " || name.length < 3) {
       this.setState({
-        error: { nameErr: true, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
+        nameErr: true,
       });
       setTimeout(() => {
         this.setState({
-          error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
+          nameErr: false
+        })
+      }, 3000);
+
+    }
+    if (email === "") {
+      console.log("email error")
+      this.setState({
+        emailErr: true
+      });
+      setTimeout(() => {
+        this.setState({
+          emailErr: false
         });
       }, 3000);
     }
-    // else if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/) || email == "" || email == " ") {
-    //   this.setState({
-    //     error: { nameErr: false, emailErr: true, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
-    //   });
-    //   setTimeout(() => {
-    //     this.setState({
-    //       error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
-    //     });
-    //   }, 3000);
-    // }
-    else if (email != "") {
+    if (email != "") {
+      var extension = email.slice(dotIndex, emailIndex);
+
       let x = email;
       var atpos = x.indexOf("@");
       var dotpos = x.lastIndexOf(".");
       if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= x.length) {
         this.setState({
-          error: { nameErr: false, emailErr: true, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
+          emailErr: true
         });
         setTimeout(() => {
           this.setState({
-            error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
+            emailErr: false
           });
-        }, 3000); 
+        }, 3000);
+
       }
-      else if (Extension !== ".edu") {
+      if (extension !== ".edu") {
+        console.log("edu")
         this.setState({ extensionErr: true })
         setTimeout(() => {
           this.setState({ extensionErr: false })
         }, 3000);
       }
-      else if (!mobile || mobile.length < 7) {
+
+    }
+
+    if (!mobile || mobile.length < 7) {
+      this.setState({
+        mobileErr: true
+      });
+      setTimeout(() => {
         this.setState({
-          error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: true, unversityErr: false }
+          mobileErr: false
         });
-        setTimeout(() => {
-          this.setState({
-            error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
-          });
-        }, 3000);
-      }
-      else if (!Dob || age < 18) {
+      }, 3000);
+    }
+    if (!Dob || age < 18) {
+      this.setState({
+        dobErr: true
+      });
+      setTimeout(() => {
         this.setState({
-          error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: true, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
+          dobErr: false
         });
-        setTimeout(() => {
-          this.setState({
-            error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
-          });
-        }, 3000);
-      }
-  
-      else if (!password.match('^(?=.*?[A-Z]).{8,}$')) {
+      }, 3000);
+    }
+
+    if (!password.match('^(?=.*?[A-Z]).{8,}$')) {
+      this.setState({
+        passwordErr: true
+      });
+      setTimeout(() => {
         this.setState({
-          error: { nameErr: false, emailErr: false, passwordErr: true, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
+          passwordErr: false
         });
-        setTimeout(() => {
-          this.setState({
-            error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
-          });
-        }, 3000);
-      }
-      else if (confirmpassword !== this.state.password) {
+      }, 3000);
+    }
+    if (confirmpassword !== this.state.password) {
+      this.setState({
+        cPasswordErr: true
+      });
+      setTimeout(() => {
         this.setState({
-          error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: true, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
+          cPasswordErr: false
         });
-        setTimeout(() => {
-          this.setState({
-            error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
-          });
-        }, 3000);
-      }
-      else if (selectedUni === null) {
+      }, 3000);
+    }
+    if (selectedUni === null) {
+      this.setState({
+        unversityErr: true
+      });
+      setTimeout(() => {
         this.setState({
-          error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: true }
+          unversityErr: false
         });
-        setTimeout(() => {
-          this.setState({
-            error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
-          });
-        }, 3000);
-      }
-      else if (gender == "") {
+      }, 3000);
+    }
+    if (gender == "") {
+      this.setState({
+        genderErr: true
+      });
+      setTimeout(() => {
         this.setState({
-          error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: true, mobileErr: false, unversityErr: false }
+          genderErr: false
         });
-        setTimeout(() => {
-          this.setState({
-            error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
-          });
-        }, 3000);
-      }
-      else if (gender == "") {
-        this.setState({
-          error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: true, genderErr: false, mobileErr: false, unversityErr: false }
-        });
-        setTimeout(() => {
-          this.setState({
-            error: { nameErr: false, emailErr: false, passwordErr: false, cPasswordErr: false, dobErr: false, roleErr: false, genderErr: false, mobileErr: false, unversityErr: false }
-          });
-        }, 3000);
-      }
-      else {
-        console.log(selectedUni,'esllllllllllllllllll')
+      }, 3000);
+    }
+    setTimeout(() => {
+      if (this.state.cPasswordErr === false && this.state.passwordErr == false && this.state.nameErr === false && this.state.emailErr === false && this.state.unversityErr === false && this.state.genderErr === false && this.state.mobileErr == false) {
+        console.log(selectedUni, 'esllllllllllllllllll')
         name, email, password, confirmpassword, university, role, gender, Dob, mobile
         var data = {
           name: name,
           phone: mobile,
           email: email,
           password: password,
-          role_id:'5',
-          dob:Dob,
+          role_id: '4',
+          dob: Dob,
           password_confirmation: confirmpassword,
           device_token: this.state.device_token,
           device_type: this.state.device_type,
-          gender:gender,
-          university_id: selectedUni.id
+          gender: gender,
+          university_id: selectedUni
         }
-        this.setState({isloading:true});
+        this.setState({ isloading: true });
         this.props.register_request(data)
         console.log(data)
-        // Alert.alert('SUCCESSFUL', 'You have been Registered successfully', [
-  
-        //   { text: 'OK', onPress: () => console.log('OK Pressed') },
-        // ]);
-        // this.props.navigation.navigate.pop();
+
       }
-    }
-    
+      else {
+        console.log("koi error h", this.state.nameErr, 'emai', this.state.emailErr, 'uni', this.state.unversityErr, 'gender', this.state.genderErr, "mobile", this.state.mobileErr)
+      }
+    }, 100)
   };
   renderStartDatepicker = () => {
 
@@ -345,134 +358,107 @@ class RegistrationScreen extends Component {
 
   };
 
-  selectDropdownItem = (el) => {
-    console.log(el)
-    this.setState({ selectedUni: el, onAddUni: false });
-  }
+  
+  renderDropDownList = (
 
-  renderDropdownList = (data) => {
-    return (
-      <View>
-        {data.map((el, index) => {
-            return (
-              <TouchableOpacity
-                style={{
-                  //backgroundColor: "red",
-                  flex: 1,
-                  height: Metrics.ratio(40)
-                }}
-                onPress={() => {
-                  this.selectDropdownItem(el);
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 16,
-                    marginVertical: Metrics.screenHeight * 0.01,
-                    marginLeft: Metrics.screenWidth * 0.02,
-                    borderBottomColor:'#b4b4b4',
-                    borderBottomWidth: StyleSheet.hairlineWidth
-                  }}
-                >
-                  {el.name}
-                </Text>
-              </TouchableOpacity>
-            );
-          
-        })}
-      </View>
-    );
-  }
+    headerText,
+    placeholder,
+    ErrTxt,
+    Iserr,
+    image,
+  ) => {
 
-  renderDropdown = data => {
-    let calculatedHeightFromRecords = data && data.length * Metrics.ratio(40);
-    let maximumAllowedHeight = Metrics.ratio(40) * 3;
-    return (
-      <View
-        style={{
-          width: Metrics.screenWidth * 0.865,
-          height:
-            calculatedHeightFromRecords < maximumAllowedHeight
-              ? calculatedHeightFromRecords
-              : maximumAllowedHeight,
-          marginHorizontal: Metrics.ratio(25),
-          borderBottomLeftRadius: Metrics.ratio(5),
-          borderBottomRightRadius: Metrics.ratio(5),
-          backgroundColor: "white",
-          elevation: 5
-        }}
-      >
-        <ScrollView>
-          {data && data && data.length > 0 && this.renderDropdownList(data)}
-        </ScrollView>
-      </View>
-    );
-  };
 
-  renderDropdownContainer = (headerText, placeholder, errTxt, isErr, image) => {
-    const { onAddUni, specificAgencyWorker, selectedUni, universities} = this.state;
     return (
-      <View >
-        <TouchableOpacity   onPress={() => this.setState({ onAddUni: true})}
-        style = {{width: Metrics.screenWidth * 0.9,
-                  marginHorizontal: Metrics.screenWidth * 0.025}}>
-          <Text style={{color: "black",
-                          fontSize: Metrics.ratio(14),
-                          fontFamily: Fonts.type.demibold}}>{headerText}</Text>
+      <View style={styles.inputFieldView}>
+        <Text style={styles.inputFieldHeaderText}>{headerText}</Text>
         <View
-          style={[{
-            flexDirection: "row",
-            alignItems: "center",
-            paddingLeft: Metrics.ratio(5),
-            width: Metrics.screenWidth * 0.9,
-            borderBottomWidth: StyleSheet.hairlineWidth,
-            borderBottomColor: "#b4b4b4",
-            marginBottom: Metrics.ratio(10)
-          },Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
-        >
-            <Image
+          style={[
+            {
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingLeft: Metrics.ratio(5),
+              width: Metrics.screenWidth * 0.9,
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              borderBottomColor: '#b4b4b4',
+              marginBottom: Metrics.ratio(10),
+            },
+            Platform.OS === 'ios' && { marginVertical: Metrics.ratio(8) },
+          ]}>
+          <Image
             source={image}
-            style={[{
-              width: Metrics.ratio(20),
-              height: Metrics.ratio(20),
-              marginTop: Metrics.ratio(6)
-            },Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
+            style={[
+              {
+                width: Metrics.ratio(20),
+                height: Metrics.ratio(20),
+                marginTop: Metrics.ratio(6),
+              },
+              Platform.OS === 'ios' && { marginBottom: Metrics.ratio(7) },
+            ]}
           />
-          <Text
-           style={{
-             fontSize: Metrics.ratio(16),
-             color: "#b4b4b4"
-           }}
-         >
-           {selectedUni
-             ? selectedUni.name
-             : "University Attending"}
-         </Text>
-        </View>
-          {/* <TouchableOpacity
-            style={{
-              width: Metrics.ratio(44),
-              height: Metrics.ratio(44),
-              justifyContent: "center",
-              alignItems: "center"
+          {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
+          <RNPickerSelect
+            onValueChange={value => {
+              console.log(value, 'valllllsjkdsahkdjh');
+              this.setState({ selectedUni: value })
+
             }}
-            onPress={() => this.setState({ onAddUni: true})}
-          >
-            <Icon
-              style={{ marginLeft: Metrics.ratio(20) }}
-              size={20}
-              color="grey"
-              name={"chevron-down"}University Attending
-            />
-          </TouchableOpacity> */}
-        </TouchableOpacity>
-        {onAddUni &&
-          universities.length !== 0 &&
-          this.renderDropdown(universities)}
-          {isErr && <View><Text style={{ color: 'red' }} >**{errTxt}</Text></View>}
+            items={this.state.universities}
+            placeholder={{
+              label: 'Select University',
+              value: null,
+            }}
+            style={{
+              placeholder: {
+                fontSize: Metrics.ratio(16),
+                color: '#b4b4b4',
+                fontFamily: Fonts.type.regular,
+                marginTop: Metrics.ratio(15),
+              },
+              inputIOS: {
+                marginTop: Metrics.ratio(15),
+                fontFamily: Fonts.type.regular,
+                fontSize: Metrics.ratio(16),
+                color: '#b4b4b4',
+              },
+              viewContainer: {
+                height: 20,
+                width: Metrics.screenWidth * 0.8,
+                // paddingLeft: Metrics.ratio(15),
+                marginBottom:Metrics.ratio(40)
+              },
+            }}
+          />
+          {/* <Picker
+            selectedValue={this.state.Nofofbags}
+            style={{ height: 50, width: 100 }}
+            onValueChange={(itemValue, itemIndex) => {
+              var total = 10.99;
+              if (itemValue == '1') {
+                total = total + 1;
+                this.setState({ Nofofbags: itemValue, total: total });
+              } else if (itemValue == '2') {
+                total = total + 7.99 + 1;
+                this.setState({ Nofofbags: itemValue, total: total });
+              }
+              console.log(this.state.Nofofbags);
+            }}>
+            <Picker.Item label="1" value="1" />
+            <Picker.Item label="2" value="2" />
+          </Picker> */}
+        </View>
+        {Iserr && (
+          <View>
+            <Text style={{ color: 'red' }}>**{ErrTxt}</Text>
+          </View>
+        )}
       </View>
     );
   };
+
+
+
+
 
   renderInputfield = (headerText, placeholder, ErrTxt, Iserr, onChangeText, image, rightIcon, onRightIconClick) => {
 
@@ -488,7 +474,7 @@ class RegistrationScreen extends Component {
             borderBottomWidth: StyleSheet.hairlineWidth,
             borderBottomColor: "#b4b4b4",
             marginBottom: Metrics.ratio(10)
-          },Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
+          }, Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
         >
           <Image
             source={image}
@@ -496,7 +482,7 @@ class RegistrationScreen extends Component {
               width: Metrics.ratio(20),
               height: Metrics.ratio(20),
               marginTop: Metrics.ratio(6)
-            },Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
+            }, Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
           {rightIcon && <TextInput
@@ -539,7 +525,7 @@ class RegistrationScreen extends Component {
             borderBottomWidth: StyleSheet.hairlineWidth,
             borderBottomColor: "#b4b4b4",
             marginBottom: Metrics.ratio(10)
-          },Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
+          }, Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
         >
           <Image
             source={image}
@@ -547,9 +533,9 @@ class RegistrationScreen extends Component {
               width: Metrics.ratio(20),
               height: Metrics.ratio(20),
               marginTop: Metrics.ratio(6)
-            },Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
-            resizeMethod = 'auto'
-            resizeMode = 'cover'
+            }, Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
+            resizeMethod='auto'
+            resizeMode='cover'
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
           {rightIcon && <TextInput
@@ -591,7 +577,7 @@ class RegistrationScreen extends Component {
             borderBottomWidth: StyleSheet.hairlineWidth,
             borderBottomColor: "#b4b4b4",
             marginBottom: Metrics.ratio(10)
-          },Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
+          }, Platform.OS === "ios" && { marginVertical: Metrics.ratio(8) }]}
         >
           <Image
             source={image}
@@ -599,7 +585,7 @@ class RegistrationScreen extends Component {
               width: Metrics.ratio(20),
               height: Metrics.ratio(20),
               marginTop: Metrics.ratio(6)
-            },Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
+            }, Platform.OS === "ios" && { marginBottom: Metrics.ratio(7) }]}
           />
           {/* <Icon style={{}} size={25} color="#0f5997" name={"user"} /> */}
           <TextInput
@@ -670,18 +656,18 @@ class RegistrationScreen extends Component {
         <KeyboardAwareScrollView>
 
           <View style={[styles.bodyView, Platform.OS === "ios" && { marginTop: Metrics.ratio(30) }]}>
-         <View style = {{width: Metrics.screenWidth * 0.95, justifyContent: 'center', alignItems: 'center'}}>
-         <Image
-                  source={Images.logo}
-                  style={{
-                    width: Metrics.ratio(175),
-                    height: Metrics.ratio(56),
-                    marginBottom: Metrics.ratio(15)
-                  }}
-                 resizeMethod = 'auto'
-                 resizeMode = 'cover'
-                />
-         </View>
+            <View style={{ width: Metrics.screenWidth * 0.95, justifyContent: 'center', alignItems: 'center' }}>
+              <Image
+                source={Images.logo}
+                style={{
+                  width: Metrics.ratio(175),
+                  height: Metrics.ratio(56),
+                  marginBottom: Metrics.ratio(15)
+                }}
+                resizeMethod='auto'
+                resizeMode='cover'
+              />
+            </View>
             <View style={styles.headerView}>
 
               <Text style={styles.headerText}>SIGN UP</Text>
@@ -692,7 +678,7 @@ class RegistrationScreen extends Component {
                   "FIRST NAME",
                   "First Name",
                   "First Name Required must be contain atleast 4 words",
-                  this.state.error.nameErr,
+                  this.state.nameErr,
                   this.onChangeFirstName,
                   Images.firstNameIcon
                 )}
@@ -702,7 +688,7 @@ class RegistrationScreen extends Component {
                   "LAST NAME",
                   "Last Name",
                   "Last Name Required must be contain atleast 4 words",
-                  this.state.error.nameErr,
+                  this.state.nameErr,
                   this.onChangeLastName,
                   Images.firstNameIcon
                 )}
@@ -712,7 +698,7 @@ class RegistrationScreen extends Component {
               "EMAIL",
               "Student Email (.edu)",
               "email Required",
-              this.state.error.emailErr,
+              this.state.emailErr,
               this.onChangeEmail,
               Images.emailIcon
             )}
@@ -721,7 +707,7 @@ class RegistrationScreen extends Component {
               "MOBILE NUMBER",
               "Enter Mobile Number",
               "mobile No Required",
-              this.state.error.mobileErr,
+              this.state.mobileErr,
               this.onChangeNumber,
               Images.mobileNumber
             )}
@@ -737,7 +723,7 @@ class RegistrationScreen extends Component {
                   DATE OF BIRTH
              </Text>
                 {this.renderStartDatepicker()}
-                {this.state.error.dobErr && <View><Text style={{ color: 'red' }} >*You are not allowed to register without valid date of birth</Text></View>}
+                {this.state.dobErr && <View><Text style={{ color: 'red' }} >*You are not allowed to register without valid date of birth</Text></View>}
               </View>
             </View>
             {/* {this.renderInputfield(
@@ -751,7 +737,7 @@ class RegistrationScreen extends Component {
               "PASSWORD",
               "Enter Password",
               "Must be at least 8 characters and include 1 capital letter",
-              this.state.error.passwordErr,
+              this.state.passwordErr,
               this.onChangePassword,
               Images.passwordIcon,
               Images.passwordIcon,
@@ -761,7 +747,7 @@ class RegistrationScreen extends Component {
               "CONFIRM PASSWORD",
               "Confirm Password",
               "password not matched",
-              this.state.error.cPasswordErr,
+              this.state.cPasswordErr,
               this.onChangeConfirmPassword,
               Images.passwordIcon,
               Images.passwordIcon,
@@ -771,24 +757,29 @@ class RegistrationScreen extends Component {
               "UNIVERSITY ATTENDING",
               "University Attending",
               "Enter University Name",
-              this.state.error.unversityErr,
+              this.state.unversityErr,
               this.onchangeUniversity,
               Images.Scholar
             )} */}
-            {this.renderDropdownContainer( 
+            {/* {this.renderDropdownContainer(
               "UNIVERSITY ATTENDING",
               "University Attending",
               "Enter University Name",
-              this.state.error.unversityErr,
+              this.state.unversityErr,
               Images.Scholar)
-            }
-
+            } */}
+            {this.renderDropDownList(
+              "UNIVERSITY ATTENDING",
+              "University Attending",
+              "Enter University Name",
+              this.state.unversityErr,
+              Images.Scholar)}
             {this.renderRadio(
               "GENDER",
               "MALE",
               "FEMALE",
               "Select Gender",
-              this.state.error.genderErr,
+              this.state.genderErr,
               this.onchangeGender
             )}
             {/* {this.renderRadio(
@@ -796,7 +787,7 @@ class RegistrationScreen extends Component {
              "USER",
              "WASHER",
              "Select Role",
-             this.state.error.roleErr,
+             this.state.roleErr,
              this.onchangeRole
            )} */}
             <TouchableOpacity style={styles.submitButtonView} onPress={() => this.onSubmitHandle()}>
@@ -847,7 +838,7 @@ class RegistrationScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>
-          </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
         {/* </ScrollView> */}
         {/* </View> */}
         {this.renderOverlaySpinner()}
