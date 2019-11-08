@@ -22,6 +22,7 @@ import {request as Edit_profile} from '../../actions/EditProfileAction';
 import DatePicker from 'react-native-datepicker';
 import styles from './styles';
 import ImagePicker from 'react-native-image-picker';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 class ProfileScreeen extends Component {
   constructor(props) {
@@ -193,6 +194,7 @@ class ProfileScreeen extends Component {
         console.log(payload, 'payyyyyyyyyyyyyyy');
         var token = user.access_token;
         console.log(token);
+        // this.setState({showProfile: true, showUpdateProfile: false})
         var datawithtoken = {token: token, payload: payload};
         this.props.Edit_profile(datawithtoken);
         console.log(datawithtoken);
@@ -242,8 +244,8 @@ class ProfileScreeen extends Component {
             // editable={false}
             placeholderTextColor="#b4b4b4"
             // secureTextEntry={rightIcon ? this.state.showpassword : false}
-            placeholder={placeholder}
-            // value={placeholder}
+            // placeholder={placeholder}
+            value={placeholder}
             onChangeText={text => {
               onChangeText(text);
             }}
@@ -263,6 +265,7 @@ class ProfileScreeen extends Component {
         style={{width: Metrics.ratio(200)}}
         date={this.state.Dob}
         mode="date"
+        // value={dob}
         placeholder={dob}
         format="MM-DD-YYYY"
         minDate="01-05-1950"
@@ -353,7 +356,8 @@ class ProfileScreeen extends Component {
           <TextInput
             style={styles.inputField}
             placeholderTextColor="#b4b4b4"
-            placeholder={placeholder}
+            // placeholder={placeholder}
+            value={placeholder}
             keyboardType={'numeric'}
             onChangeText={text => {
               onChangeText(text);
@@ -397,7 +401,8 @@ class ProfileScreeen extends Component {
             numberOfLines={4}
             placeholderTextColor="#b4b4b4"
             // secureTextEntry={rightIcon ? this.state.showpassword : false}
-            placeholder={placeholder}
+            // placeholder={placeholder}
+            value={placeholder}
             onChangeText={text => {
               onChangeText(text);
             }}
@@ -416,8 +421,11 @@ class ProfileScreeen extends Component {
 
     return (
       <View>
+         <KeyboardAwareScrollView>
         <View style={styles.Profilecard}>
+          
           <View>
+
             <View style={styles.ProfileImgContainer}>
               {profileImg ? (
                 <Image
@@ -567,6 +575,7 @@ class ProfileScreeen extends Component {
             </TouchableOpacity>
           </View>
         </View>
+        </KeyboardAwareScrollView>
       </View>
     );
   };
@@ -591,7 +600,7 @@ class ProfileScreeen extends Component {
               {user && user.name && user.name}
             </Text>
             <StarRating
-              disabled={false}
+              disabled={true}
               maxStars={5}
               starSize={15}
               rating={this.state.starCount}
@@ -638,6 +647,7 @@ class ProfileScreeen extends Component {
               )}
             </View>
           </View>
+          
           <View style={styles.BioBody}>
             <Text style={styles.bodyHeading}>Bio:</Text>
             {/* {!userDetails.bio && <Text style={styles.TxtBio}></Text>} */}
