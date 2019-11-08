@@ -34,7 +34,7 @@ import configureStore from '../../store';
 import {request as order_request} from '../../actions/OrderAction';
 import RNPickerSelect from 'react-native-picker-select';
 import Geocoder from 'react-native-geocoding';
-import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 
 // import { request as order_request } from '../../actions/OrderAction';
 // import { exportDefaultSpecifier } from '@babel/types';
@@ -187,7 +187,7 @@ class FindWashScreen extends Component {
   }
 
   async requestLocationPermission() {
-    check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+    check(PERMISSIONS.IOS.LOCATION_ALWAYS)
     .then(result => {
       switch (result) {
         case RESULTS.UNAVAILABLE:
@@ -201,7 +201,11 @@ class FindWashScreen extends Component {
           );
           break;
         case RESULTS.GRANTED:
-          console.log('The permission is granted');
+            request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(result => {
+              // …
+          console.log(result,'The permission is granteddddddd');
+
+            });
           break;
         case RESULTS.BLOCKED:
           console.log('The permission is denied and not requestable anymore');
