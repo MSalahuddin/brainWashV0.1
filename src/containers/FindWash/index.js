@@ -36,6 +36,8 @@ import RNPickerSelect from 'react-native-picker-select';
 import Geocoder from 'react-native-geocoding';
 import Util from '../../util';
 import Actions from 'react-native-router-flux';
+import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
+
 // import { request as order_request } from '../../actions/OrderAction';
 // import { exportDefaultSpecifier } from '@babel/types';
 
@@ -186,6 +188,36 @@ class FindWashScreen extends Component {
     this.setInitialCoordinates();
     this.findCords();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    if (Platform.OS === 'ios') {
+      this.requestLocationPermission();
+    }
+  }
+
+  async requestLocationPermission() {
+    check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+      .then(result => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              'This feature is not available (on this device / in this context)',
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log(
+              'The permission has not been requested / is denied but requestable',
+            );
+            break;
+          case RESULTS.GRANTED:
+            console.log('The permission is granted');
+            break;
+          case RESULTS.BLOCKED:
+            console.log('The permission is denied and not requestable anymore');
+            break;
+        }
+      })
+      .catch(error => {
+        console.log(error, 'permissionError');
+      });
   }
 
   setInitialCoordinates = () => {

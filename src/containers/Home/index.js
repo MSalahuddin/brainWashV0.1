@@ -261,7 +261,9 @@ class HomeScreen extends Component {
         </View> */}
         <ScrollView
           keyboardShouldPersistTaps="always"
-          style={{marginBottom: Metrics.ratio(40)}}>
+          style={{
+            // marginBottom: Metrics.ratio(40)
+            }}>
           <HomeCubes {...this.props} cubes={boxuser} />
           <TouchableOpacity
             style={styles.customerButtonView}
