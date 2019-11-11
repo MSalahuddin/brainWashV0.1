@@ -697,6 +697,7 @@ class FindWashScreen extends Component {
       <View style={styles.inputFieldView}>
         {tooltip == true && (
           <Tooltip
+          tooltipStyle={{width:Metrics.screenWidth*0.30,position:"absolute",left:Metrics.ratio(5)}}
             // arrowSize={{ width: 8, height: 8} }
             isVisible={this.state.toolTipVisible}
             content={
@@ -1074,6 +1075,28 @@ class FindWashScreen extends Component {
       // </View>
     );
   };
+  onChangeCompleteDropOff = (e) => {
+    this.setState(
+      {
+        // dropoffvalue:this.getLocationName( e.latitude,e.longitude),
+        dropoff: {
+          latitude: e.latitude,
+          longitude: e.longitude,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        },
+      },
+      async () => {
+        let loc = await this.getLocationName(
+          e.latitude,
+          e.longitude,
+        );
+        this.setState({
+          dropoffvalue: loc,
+        });
+      },
+    );
+  }
   renderDropOff = () => {
     const {dropoffvalue} = this.state;
     return (
@@ -1109,29 +1132,10 @@ class FindWashScreen extends Component {
               <MapView
                 // mapType={Platform.OS == "android" ? "none" : "standard"}
                 onRegionChangeComplete={e => {
-                  this.setState(
-                    {
-                      // dropoffvalue:this.getLocationName( e.latitude,e.longitude),
-                      dropoff: {
-                        latitude: e.latitude,
-                        longitude: e.longitude,
-                        latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,
-                      },
-                    },
-                    async () => {
-                      let loc = await this.getLocationName(
-                        e.latitude,
-                        e.longitude,
-                      );
-                      this.setState({
-                        dropoffvalue: loc,
-                      });
-                    },
-                  );
+                  this.onChangeCompleteDropOff(e)
                 }}
                 onPress={e => {
-                  console.log(e.nativeEvent);
+                  
 
                   this.setState(
                     {
@@ -1157,7 +1161,7 @@ class FindWashScreen extends Component {
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={{...StyleSheet.absoluteFillObject}}
                 region={this.state.dropoff}>
-                <Marker
+                {/* <Marker
                   draggable={true}
                   title="This is a title"
                   coordinate={this.state.dropoff}
@@ -1183,9 +1187,23 @@ class FindWashScreen extends Component {
                       },
                     );
                   }}
-                />
+                /> */}
               </MapView>
             )}
+            <View
+              pointerEvents="none"
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: Metrics.ratio(70),
+                left: 0,
+                right: 0,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'transparent',
+              }}>
+              <Image pointerEvents="none" source={Images.markerIcon} />
+            </View>
           </View>
 
           <GooglePlacesInput

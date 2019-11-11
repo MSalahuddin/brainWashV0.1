@@ -422,10 +422,9 @@ class RegistrationwasherScreen extends Component {
                 color: '#b4b4b4',
               },
               viewContainer: {
-                height: 20,
+                height: 50,
                 width: Metrics.screenWidth * 0.8,
-                // paddingLeft: Metrics.ratio(15),
-                marginBottom:Metrics.ratio(40)
+                paddingLeft: Metrics.ratio(15),
               },
             }}
           />
