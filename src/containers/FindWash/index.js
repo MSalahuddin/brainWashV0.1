@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import styles from './styles';
-import {Header} from '../../components';
+import {Header, MapDisplayField} from '../../components';
 import {Fonts, Metrics, Images} from '../../theme';
 import DatePicker from 'react-native-datepicker';
 // import MapView from 'react-native-maps';
@@ -34,8 +34,14 @@ import configureStore from '../../store';
 import {request as order_request} from '../../actions/OrderAction';
 import RNPickerSelect from 'react-native-picker-select';
 import Geocoder from 'react-native-geocoding';
+import Util from '../../util';
+import Actions from 'react-native-router-flux';
+
+import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
+
 // import { request as order_request } from '../../actions/OrderAction';
 // import { exportDefaultSpecifier } from '@babel/types';
+
 Geocoder.init('AIzaSyCIGENLCfCwZwPaumiUQs21GfgMhgppa7s');
 const homePlace = {
   description: 'Home',
@@ -163,6 +169,10 @@ class FindWashScreen extends Component {
         latitudeDelta: 0.015,
         longitudeDelta: 0.0121,
       },
+      coordinate: {
+        lat: 48.8152937,
+        long: 2.4597668,
+      },
     };
   }
   componentDidMount() {
@@ -179,6 +189,39 @@ class FindWashScreen extends Component {
     this.setInitialCoordinates();
     this.findCords();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    if (Platform.OS === 'ios') {
+      this.requestLocationPermission();
+    }
+  }
+
+  async requestLocationPermission() {
+    check(PERMISSIONS.IOS.LOCATION_ALWAYS)
+      .then(result => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              'This feature is not available (on this device / in this context)',
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log(
+              'The permission has not been requested / is denied but requestable',
+            );
+            break;
+          case RESULTS.GRANTED:
+            request(PERMISSIONS.IOS.LOCATION_ALWAYS).then(result => {
+              // …
+              console.log(result, 'The permission is granteddddddd');
+            });
+            break;
+          case RESULTS.BLOCKED:
+            console.log('The permission is denied and not requestable anymore');
+            break;
+        }
+      })
+      .catch(error => {
+        console.log(error, 'permissionError');
+      });
   }
 
   setInitialCoordinates = () => {
@@ -654,6 +697,7 @@ class FindWashScreen extends Component {
       <View style={styles.inputFieldView}>
         {tooltip == true && (
           <Tooltip
+          tooltipStyle={{width:Metrics.screenWidth*0.30,position:"absolute",left:Metrics.ratio(5)}}
             // arrowSize={{ width: 8, height: 8} }
             tooltipStyle={{width:Metrics.screenWidth*0.30,position:"absolute",left:Metrics.ratio(5)}}
             isVisible={this.state.toolTipVisible}
@@ -793,6 +837,26 @@ class FindWashScreen extends Component {
     });
   };
 
+  onRegionChangeComplete = e => {
+    this.setState(
+      {
+        pickup: {
+          latitude: e.latitude,
+          longitude: e.longitude,
+          latitudeDelta: e.latitudeDelta,
+          longitudeDelta: e.longitudeDelta,
+        },
+      },
+      async () => {
+        let loc = await this.getLocationName(e.latitude, e.longitude);
+        this.setState({
+          pickupvalue: loc,
+          dropoffvalue: loc,
+        });
+      },
+    );
+  };
+
   renderPickup = () => {
     const {pickupvalue} = this.state;
     return (
@@ -826,37 +890,70 @@ class FindWashScreen extends Component {
             }}>
             {this.state.pickup.latitude !== null &&
               this.state.pickup.longitude !== null && (
+                // <MapDisplayField
+                //   roundedBottom={true}
+                //   containerStyle={{
+                //     marginHorizontal: 0,
+                //     marginTop: 0,
+                //     borderRadius: Metrics.ratio(5),
+                //     height: Metrics.ratio(200),
+                //     // borderColor: "pink",
+                //     // borderWidth: 2
+                //   }}
+                //   mapStyle={{
+                //     borderRadius: Metrics.ratio(5),
+                //   }}
+                //   locationCoords={Util.getLocalLocationObject(
+                //     this.state.coordinate,
+                //   )}
+                //   // markerTitle={storeName}
+                //   markerDesc={'address'}
+                //   onRegionChangeComplete={this.onRegionChangeComplete}
+                //   onMapTap={e => {
+                //     console.log(e.nativeEvent.coordinate, '/////////////');
+                //     this.setState({
+                //       coordinate: {
+                //         lat: e.nativeEvent.coordinate.latitude,
+                //         long: e.nativeEvent.coordinate.longitude,
+                //       },
+                //     });
+
+                //     this.setState(
+                //       {
+                //         pickup: {
+                //           latitude: e.nativeEvent.coordinate.latitude,
+                //           longitude: e.nativeEvent.coordinate.longitude,
+                //           latitudeDelta: 0.015,
+                //           longitudeDelta: 0.0121,
+                //         },
+                //       },
+                //       async () => {
+                //         let loc = await this.getLocationName(
+                //           e.nativeEvent.coordinate.latitude,
+                //           e.nativeEvent.coordinate.longitude,
+                //         );
+                //         this.setState({
+                //           pickupvalue: loc,
+                //           dropoffvalue: loc,
+                //         });
+                //       },
+                //     );
+                //   }}
+                // />
                 <MapView
+                  ref={ref => {
+                    this.map = ref;
+                  }}
+                  showsMyLocationButton={false}
+                  toolbarEnabled={false}
+                  showsUserLocation={true}
                   // mapType={Platform.OS == "android" ? "none" : "standard"}
                   onRegionChangeComplete={e => {
-                    this.setState(
-                      {
-                        // dropoffvalue:this.getLocationName( e.latitude,e.longitude),
-                        pickup: {
-                          latitude: e.latitude,
-                          longitude: e.longitude,
-                          latitudeDelta: 0.015,
-                          longitudeDelta: 0.0121,
-                        },
-                      },
-                      async () => {
-                        let loc = await this.getLocationName(
-                          e.latitude,
-                          e.longitude,
-                        );
-                        this.setState({
-                          pickupvalue: loc,
-                          dropoffvalue: loc,
-                        });
-                      },
-                    );
+                    this.onRegionChangeComplete(e);
                   }}
                   onPress={e => {
-                    console.log(e.nativeEvent);
-
                     this.setState(
                       {
-                        // dropoffvalue:this.getLocationName(e.nativeEvent.coordinate.latitude,  e.nativeEvent.coordinate.longitude),
                         pickup: {
                           latitude: e.nativeEvent.coordinate.latitude,
                           longitude: e.nativeEvent.coordinate.longitude,
@@ -871,7 +968,6 @@ class FindWashScreen extends Component {
                         );
                         this.setState({
                           pickupvalue: loc,
-                          dropoffvalue: loc,
                         });
                       },
                     );
@@ -879,37 +975,51 @@ class FindWashScreen extends Component {
                   provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                   style={{...StyleSheet.absoluteFillObject}}
                   region={this.state.pickup}>
-                  <Marker
+                  {/* <Marker
                     draggable={true}
                     title="This is a title"
                     style={{width: 40, height: 40}}
                     coordinate={this.state.pickup}
-                    onDragEnd={e => {
-                      this.setState(
-                        {
-                          // pickupvalue:this.getLocationName( e.nativeEvent.coordinate.latitude,  e.nativeEvent.coordinate.longitude),
-
-                          pickup: {
-                            latitude: e.nativeEvent.coordinate.latitude,
-                            longitude: e.nativeEvent.coordinate.longitude,
-                            latitudeDelta: 0.015,
-                            longitudeDelta: 0.0121,
-                          },
-                        },
-                        async () => {
-                          let loc = await this.getLocationName(
-                            e.nativeEvent.coordinate.latitude,
-                            e.nativeEvent.coordinate.longitude,
-                          );
-                          this.setState({
-                            pickupvalue: loc,
-                          });
-                        },
-                      );
-                    }}
-                  />
+                    // onDragEnd={e => {
+                    //   console.log(e, 'eeeeeeeeeeeeeeeeeeeeeeeee');
+                    //   // this.setState(
+                    //   //   {
+                    //   //     // pickupvalue:this.getLocationName( e.nativeEvent.coordinate.latitude,  e.nativeEvent.coordinate.longitude),
+                    //   //     pickup: {
+                    //   //       latitude: e.nativeEvent.coordinate.latitude,
+                    //   //       longitude: e.nativeEvent.coordinate.longitude,
+                    //   //       latitudeDelta: 0.015,
+                    //   //       longitudeDelta: 0.0121,
+                    //   //     },
+                    //   //   },
+                    //   //   async () => {
+                    //   //     let loc = await this.getLocationName(
+                    //   //       e.nativeEvent.coordinate.latitude,
+                    //   //       e.nativeEvent.coordinate.longitude,
+                    //   //     );
+                    //   //     this.setState({
+                    //   //       pickupvalue: loc,
+                    //   //     });
+                    //   //   },
+                    //   // );
+                    // }}
+                  /> */}
                 </MapView>
               )}
+            <View
+              pointerEvents="none"
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: Metrics.ratio(70),
+                left: 0,
+                right: 0,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'transparent',
+              }}>
+              <Image pointerEvents="none" source={Images.markerIcon} />
+            </View>
           </View>
           {/* {this.GooglePlacesInput(this.getpicklatLng, "Select Pick Up Location", pickupvalue === null ? '' : pickupvalue)} */}
           <GooglePlacesInput
@@ -966,6 +1076,28 @@ class FindWashScreen extends Component {
       // </View>
     );
   };
+  onChangeCompleteDropOff = (e) => {
+    this.setState(
+      {
+        // dropoffvalue:this.getLocationName( e.latitude,e.longitude),
+        dropoff: {
+          latitude: e.latitude,
+          longitude: e.longitude,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        },
+      },
+      async () => {
+        let loc = await this.getLocationName(
+          e.latitude,
+          e.longitude,
+        );
+        this.setState({
+          dropoffvalue: loc,
+        });
+      },
+    );
+  }
   renderDropOff = () => {
     const {dropoffvalue} = this.state;
     return (
@@ -1001,29 +1133,10 @@ class FindWashScreen extends Component {
               <MapView
                 // mapType={Platform.OS == "android" ? "none" : "standard"}
                 onRegionChangeComplete={e => {
-                  this.setState(
-                    {
-                      // dropoffvalue:this.getLocationName( e.latitude,e.longitude),
-                      dropoff: {
-                        latitude: e.latitude,
-                        longitude: e.longitude,
-                        latitudeDelta: 0.015,
-                        longitudeDelta: 0.0121,
-                      },
-                    },
-                    async () => {
-                      let loc = await this.getLocationName(
-                        e.latitude,
-                        e.longitude,
-                      );
-                      this.setState({
-                        dropoffvalue: loc,
-                      });
-                    },
-                  );
+                  this.onChangeCompleteDropOff(e)
                 }}
                 onPress={e => {
-                  console.log(e.nativeEvent);
+                  
 
                   this.setState(
                     {
@@ -1049,7 +1162,7 @@ class FindWashScreen extends Component {
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={{...StyleSheet.absoluteFillObject}}
                 region={this.state.dropoff}>
-                <Marker
+                {/* <Marker
                   draggable={true}
                   title="This is a title"
                   coordinate={this.state.dropoff}
@@ -1075,9 +1188,23 @@ class FindWashScreen extends Component {
                       },
                     );
                   }}
-                />
+                /> */}
               </MapView>
             )}
+            <View
+              pointerEvents="none"
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: Metrics.ratio(70),
+                left: 0,
+                right: 0,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'transparent',
+              }}>
+              <Image pointerEvents="none" source={Images.markerIcon} />
+            </View>
           </View>
 
           <GooglePlacesInput

@@ -1,3 +1,3 @@
-import ErrorHelper from "./ErrorHelper";
-
-export { ErrorHelper };
+import ErrorHelper from './ErrorHelper';
+import LocationHelper from './LocationHelper';
+export {ErrorHelper, LocationHelper};

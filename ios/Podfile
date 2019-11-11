@@ -42,7 +42,11 @@ rn_maps_path = '../node_modules/react-native-maps'
   pod 'Google-Maps-iOS-Utils'
 
   # pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
-
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  # pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways.podspec"
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse.podspec"
   target 'vrainwasherTests' do
     inherit! :search_paths
     # Pods for testing
