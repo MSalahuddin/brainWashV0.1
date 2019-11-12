@@ -24,7 +24,9 @@ import findwashScreen from '../containers/FindWash';
 import WashhistoryScreen from '../containers/washHistory';
 import WasherhistoryScreen from '../containers/washerHistory';
 import FindOrderScreen from '../containers/FindOrders';
+import WashstatusScreen from '../containers/washerStatus';
 import PasswordresetScreen from '../containers/resetPassword';
+import  pickupScreen from '../containers/pickupScreen';
 import {Stack, Scene, Router, Actions, Tabs} from 'react-native-router-flux';
 
 function onBackPress() {
@@ -127,6 +129,32 @@ class Navigator extends Component {
             title={'FindOrderScreen'}
             key="FindOrderScreen"
             component={FindOrderScreen}
+            renderLeftButton={
+              () => {}
+              //<TabButtonLeft imagesArray={["rightArrow"]} actions={[Actions.pop]} />
+            }
+          />
+               <Scene
+            hideNavBar
+            headerStyle={styles.header}
+            titleStyle={[styles.title, {width: Metrics.screenWidth}]}
+            tintColor="white"
+            title={' pickupScreen'}
+            key="pickupScreen"
+            component={ pickupScreen}
+            renderLeftButton={
+              () => {}
+              //<TabButtonLeft imagesArray={["rightArrow"]} actions={[Actions.pop]} />
+            }
+          />
+            <Scene
+            hideNavBar
+            headerStyle={styles.header}
+            titleStyle={[styles.title, {width: Metrics.screenWidth}]}
+            tintColor="white"
+            title={' WashstatusScreen'}
+            key="WashstatusScreen"
+            component={ WashstatusScreen}
             renderLeftButton={
               () => {}
               //<TabButtonLeft imagesArray={["rightArrow"]} actions={[Actions.pop]} />

@@ -16,11 +16,16 @@ import styles from './styles';
 import {Header} from '../../components';
 import {Fonts, Metrics, Images} from '../../theme';
 import DatePicker from 'react-native-datepicker';
+import Geolocation from '@react-native-community/geolocation';
 
 class HeaderComponent extends Component {
   constructor(props) {
     super(props);
+    this.state ={
+      user:null
+    }
   }
+ 
 
   render() {
     return (
@@ -200,10 +205,17 @@ class HomeCubes extends Component {
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      role:null,
+      user:null
+    };
   }
-
+  componentDidMount(){
+    console.log("userrrrrrrrrrr",this.props.user)
+    this.setState({user:this.props.user,role:this.props.user.user.role_id})
+  }
   render() {
+    console.log("role",this.state.role)
     const boxuser = [
       {item: 'Find a Wash Now', icon: Images.washing, screen: 'findwashScreen'},
       {
@@ -216,6 +228,30 @@ class HomeScreen extends Component {
         item: 'Laundry Status',
         icon: Images.laudary_status,
         screen: 'userstatusScreen',
+      },
+      {
+        item: 'Edit Profile',
+        icon: Images.edit_profile,
+        screen: 'ProfileScreen',
+      },
+      {
+        item: 'Check Scholarships',
+        icon: Images.scholarship,
+        screen: 'userstatusScreen',
+      },
+    ];
+    const boxwasher = [
+      {item: 'Find a Wash Now', icon: Images.washing, screen: 'FindOrderScreen'},
+      {
+        item: 'Wash History',
+        icon: Images.wash_history,
+        screen: 'WasherhistoryScreen',
+      },
+      {item: 'Payment', icon: Images.payment, screen: 'findwashScreen'},
+      {
+        item: 'Laundry Status',
+        icon: Images.laudary_status,
+        screen: 'WashstatusScreen',
       },
       {
         item: 'Edit Profile',
@@ -264,8 +300,21 @@ class HomeScreen extends Component {
           style={{
             // marginBottom: Metrics.ratio(40)
             }}>
-          <HomeCubes {...this.props} cubes={boxuser} />
-          <TouchableOpacity
+          {this.state.role === 4 && <HomeCubes {...this.props} cubes={boxuser} />}
+          {this.state.role === 5 && <HomeCubes {...this.props} cubes={boxwasher} />}
+          {this.state.role === 4 && <TouchableOpacity
+            style={styles.customerButtonView}
+            onPress={() => console.log('')}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: Metrics.ratio(14),
+                fontFamily: Fonts.type.demibold,
+              }}>
+              Be the washer
+            </Text>
+          </TouchableOpacity>}
+          {this.state.role === 5 &&<TouchableOpacity
             style={styles.customerButtonView}
             onPress={() => console.log('')}>
             <Text
@@ -276,17 +325,20 @@ class HomeScreen extends Component {
               }}>
               Be the Customer
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>}
         </ScrollView>
       </View>
     );
   }
 }
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({
+  user: state.userReducer.user,
+ 
+});
 
-const actions = {};
-
+const actions = {
+};
 export default connect(
   mapStateToProps,
   actions,

@@ -38,9 +38,17 @@ statusHeadTxt:{
   fontSize:Metrics.ratio(18),
   color:'black'
 },
+profileImg:{
+  width:Metrics.ratio(60),
+  height:Metrics.ratio(60),
+  // flex:1
+
+},
 statusImg:{
   marginLeft:Metrics.ratio(10),
+  marginRight:Metrics.ratio(10),
   // marginTop:Metrics.ratio(2),
+  // backgroundColor:'#b4b4b4',
   flexDirection:'row'
   // flex:1,
 },
@@ -70,13 +78,15 @@ bodyHeading:{
 },
 
 stars:{
+  // backgroundColor:'black',
+  marginLeft:Metrics.ratio(10),
   // width:Metrics.ratio(60),
   // height:Metrics.ratio(60),
   // flex:1
 
 },
 userDetail:{
-  position:'absolute',
+  // position:'absolute',
   left:Metrics.ratio(120),
   top:Metrics.ratio(10)
 },
@@ -85,18 +95,23 @@ userName:{
   fontSize:Metrics.ratio(16),
   color:'black'
 },
+userEmail:{
+  color:'#b4b4b4'
+
+},
+
 starTxt:{
   color:'#b4b4b4'
 
 },
 amount:{
-  position:"absolute",
-  right:Metrics.ratio(2),
+ 
   backgroundColor:'#ffc057',
-  paddingRight:Metrics.ratio(15),
-  paddingLeft:Metrics.ratio(15),
-  paddingTop:Metrics.ratio(20),
-  paddingBottom:Metrics.ratio(20),
+  paddingHorizontal:Metrics.ratio(15),
+  paddingVertical:Metrics.ratio(30),
+  width:Metrics.ratio(90),
+  marginLeft:Metrics.ratio(60),
+  // paddingBottom:Metrics.ratio(20),
   borderRadius:Metrics.ratio(55)
   
 },

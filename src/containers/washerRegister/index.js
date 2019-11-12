@@ -267,7 +267,7 @@ class RegistrationwasherScreen extends Component {
     setTimeout(() => {
       if (this.state.cPasswordErr === false && this.state.passwordErr == false && this.state.nameErr === false && this.state.emailErr === false && this.state.unversityErr === false && this.state.genderErr === false && this.state.mobileErr == false) {
         console.log(selectedUni, 'esllllllllllllllllll')
-        name, email, password, confirmpassword, university, role, gender, Dob, mobile
+     
         var data = {
           name: name,
           phone: mobile,
