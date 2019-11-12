@@ -33,7 +33,9 @@ class WashstatusScreen extends Component {
          <Header
           headerText={"LAUNDARY STATUS"}
           leftIcon={Images.LeftArrow}
-          leftBtnPress={() => {console.log("hello") }}
+          leftBtnPress={() => {
+            Actions.pop()
+          }}
 
         />
         <View>

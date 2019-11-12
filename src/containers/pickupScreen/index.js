@@ -57,16 +57,17 @@ class pickupScreen extends Component {
         return (
             <View style={styles.container}>
                 <Header
+
                     headerText={this.props.header}
                     leftIcon={Images.LeftArrow}
                     leftBtnPress={() => {
                         Actions.pop();
                     }}
-                    headerIconStyle={{ marginLeft: Metrics.ratio(40) }}
-                    headerTextStyle={{ marginLeft: Metrics.ratio(50) }}
+                    headerIconStyle={{ marginLeft: Metrics.ratio(20) }}
+                    headerTextStyle={{ marginLeft: Metrics.ratio(30) }}
                 />
                 <View style={{
-                    ...StyleSheet.absoluteFillObject,
+                    // ...StyleSheet.absoluteFillObject,
                     height: Metrics.screenHeight,
                     width: Metrics.screenWidth,
                     justifyContent: 'flex-end',

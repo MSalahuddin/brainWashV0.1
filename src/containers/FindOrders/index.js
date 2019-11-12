@@ -277,7 +277,9 @@ console.log(data)
         <Header
           headerText={"FIND A WASH"}
           leftIcon={Images.LeftArrow}
-          leftBtnPress={() => { console.log("hello") }}
+          leftBtnPress={() => { 
+            Actions.pop()
+           }}
 
         />
         {this.state.scrollUp && <View>
