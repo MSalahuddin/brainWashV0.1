@@ -13,7 +13,7 @@
     "@react-native-community/geolocation": "^2.0.2",
     "apisauce": "^1.1.1",
     "moment": "^2.24.0",
-    "qs": "^6.9.0",
+    "qs": "^6.9.7",
     "react": "16.8.1",
     "react-native": "0.61.3",
     "react-native-check-box": "^2.1.7",
